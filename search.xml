@@ -42,11 +42,9 @@ $timeout(function(){
 
 //注销监听
 watch();
-</code></pre><blockquote>
-<p>还有2个和$watch相关的函数：</p>
-</blockquote>
-<p>$watchGroup(watchExpressions, listener);</p>
-<p>$watchCollection(obj, listener);</p>
+</code></pre><p>A<a href="还有2个和$watch相关的函数：">1</a></p>
+<p>[2]: $watchGroup(watchExpressions, listener);</p>
+<p>[2]: $watchCollection(obj, listener);</p>
 ]]></content>
     </entry>
     
