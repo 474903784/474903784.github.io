@@ -4,9 +4,57 @@
   
     
     <entry>
+      <title><![CDATA[『$watch的用法』]]></title>
+      <url>http://474903784.github.io/2016/07/23/$watch%E7%9A%84%E7%94%A8%E6%B3%95/</url>
+      <content type="html"><![CDATA[<p>今天在学习angular.js的时候，遇到$watch的函数，由于菜鸟教程中没有找到此函数，故在此做下笔记。</p>
+<h3 id="watch简单使用"><a href="#watch简单使用" class="headerlink" title="$watch简单使用"></a>$watch简单使用</h3><p>$watch是一个scope函数，用于监听模型变化，当你的模型部分发生变化时它会通知你。<br>$watch(watchExpression, listener, objectEquality);</p>
+<a id="more"></a>
+<p>每个参数的说明如下：</p>
+<ol>
+<li><p>watchExpression：监听的对象，它可以是一个angular表达式如’name’,或函数如function(){return $scope.name}。</p>
+</li>
+<li><p>listener:当watchExpression变化时会被调用的函数或者表达式,它接收3个参数：newValue(新值), oldValue(旧值), scope(作用域的引用)。</p>
+</li>
+<li><p>objectEquality：是否深度监听，如果设置为true,它告诉Angular检查所监控的对象中每一个属性的变化. 如果你希望监控数组的个别元素或者对象的属性而不是一个普通的值, 那么你应该使用它。</p>
+</li>
+</ol>
+<p>举个例子：</p>
+<pre><code>$scope.name = &apos;hello&apos;;
+
+var watch = $scope.$watch(&apos;name&apos;,function(newValue,oldValue, scope){
+
+    console.log(newValue);
+
+    console.log(oldValue);
+
+});
+
+$timeout(function(){
+
+    $scope.name = &quot;world&quot;;
+
+},1000);
+</code></pre><h3 id="watch性能问题"><a href="#watch性能问题" class="headerlink" title="watch性能问题"></a>watch性能问题</h3><p>太多的$watch将会导致性能问题，$watch如果不再使用，我们最好将其释放掉。</p>
+<p>$watch函数返回一个注销监听的函数，如果我们想监控一个属性，然后在稍后注销它，可以使用下面的方式：</p>
+<pre><code>var watch = $scope.$watch(&apos;someModel.someProperty&apos;, callback);
+
+//...
+
+//注销监听
+watch();
+</code></pre><blockquote>
+<p>还有2个和$watch相关的函数：</p>
+</blockquote>
+<p>$watchGroup(watchExpressions, listener);</p>
+<p>$watchCollection(obj, listener);</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Hello World]]></title>
       <url>http://474903784.github.io/2015/03/23/hello-world/</url>
       <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<a id="more"></a>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>

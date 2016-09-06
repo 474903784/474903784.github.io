@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="liuwenxing" />
+  <meta name="keywords" content="angular.js," />
 
 
 
@@ -84,16 +84,19 @@
 
 
 
-<meta name="description" content="将来的你，一定会感激现在拼命的自己！">
-<meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://474903784.github.io/categories/index.html">
+<meta name="description" content="今天在学习angular.js的时候，遇到$watch的函数，由于菜鸟教程中没有找到此函数，故在此做下笔记。
+$watch简单使用$watch是一个scope函数，用于监听模型变化，当你的模型部分发生变化时它会通知你。$watch(watchExpression, listener, objectEquality);">
+<meta property="og:type" content="article">
+<meta property="og:title" content="『$watch的用法』">
+<meta property="og:url" content="http://474903784.github.io/2016/07/23/$watch的用法/index.html">
 <meta property="og:site_name" content="LiuWenxing's Blog">
-<meta property="og:description" content="将来的你，一定会感激现在拼命的自己！">
-<meta property="og:updated_time" content="2016-08-30T02:45:51.185Z">
+<meta property="og:description" content="今天在学习angular.js的时候，遇到$watch的函数，由于菜鸟教程中没有找到此函数，故在此做下笔记。
+$watch简单使用$watch是一个scope函数，用于监听模型变化，当你的模型部分发生变化时它会通知你。$watch(watchExpression, listener, objectEquality);">
+<meta property="og:updated_time" content="2016-09-06T01:13:01.025Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="categories">
-<meta name="twitter:description" content="将来的你，一定会感激现在拼命的自己！">
+<meta name="twitter:title" content="『$watch的用法』">
+<meta name="twitter:description" content="今天在学习angular.js的时候，遇到$watch的函数，由于菜鸟教程中没有找到此函数，故在此做下笔记。
+$watch简单使用$watch是一个scope函数，用于监听模型变化，当你的模型部分发生变化时它会通知你。$watch(watchExpression, listener, objectEquality);">
 
 
 
@@ -114,15 +117,9 @@
 
 
 
-  <link rel="canonical" href="http://474903784.github.io/categories/"/>
+  <link rel="canonical" href="http://474903784.github.io/2016/07/23/$watch的用法/"/>
 
-  <title>
-  
-
-  
-    分类 | LiuWenxing's Blog
-  
-</title>
+  <title> 『$watch的用法』 | LiuWenxing's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -153,7 +150,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -276,16 +273,185 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-      <div class="category-all-page">
-        <div class="category-all-title">
-            目前共计 2 个分类
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                『$watch的用法』
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-23T20:38:54+08:00" content="2016-07-23">
+              2016-07-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/angular-js/" itemprop="url" rel="index">
+                    <span itemprop="name">angular.js</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/23/$watch的用法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/23/$watch的用法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
         </div>
-        <div class="category-all">
-          <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/angular-js/">angular.js</a><span class="category-list-count">1</span></li></ul>
-        </div>
-      </div>
+      </header>
     
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天在学习angular.js的时候，遇到$watch的函数，由于菜鸟教程中没有找到此函数，故在此做下笔记。</p>
+<h3 id="watch简单使用"><a href="#watch简单使用" class="headerlink" title="$watch简单使用"></a>$watch简单使用</h3><p>$watch是一个scope函数，用于监听模型变化，当你的模型部分发生变化时它会通知你。<br>$watch(watchExpression, listener, objectEquality);</p>
+<a id="more"></a>
+<p>每个参数的说明如下：</p>
+<ol>
+<li><p>watchExpression：监听的对象，它可以是一个angular表达式如’name’,或函数如function(){return $scope.name}。</p>
+</li>
+<li><p>listener:当watchExpression变化时会被调用的函数或者表达式,它接收3个参数：newValue(新值), oldValue(旧值), scope(作用域的引用)。</p>
+</li>
+<li><p>objectEquality：是否深度监听，如果设置为true,它告诉Angular检查所监控的对象中每一个属性的变化. 如果你希望监控数组的个别元素或者对象的属性而不是一个普通的值, 那么你应该使用它。</p>
+</li>
+</ol>
+<p>举个例子：</p>
+<pre><code>$scope.name = &apos;hello&apos;;
+
+var watch = $scope.$watch(&apos;name&apos;,function(newValue,oldValue, scope){
+
+    console.log(newValue);
+
+    console.log(oldValue);
+
+});
+
+$timeout(function(){
+
+    $scope.name = &quot;world&quot;;
+
+},1000);
+</code></pre><h3 id="watch性能问题"><a href="#watch性能问题" class="headerlink" title="watch性能问题"></a>watch性能问题</h3><p>太多的$watch将会导致性能问题，$watch如果不再使用，我们最好将其释放掉。</p>
+<p>$watch函数返回一个注销监听的函数，如果我们想监控一个属性，然后在稍后注销它，可以使用下面的方式：</p>
+<pre><code>var watch = $scope.$watch(&apos;someModel.someProperty&apos;, callback);
+
+//...
+
+//注销监听
+watch();
+</code></pre><blockquote>
+<p>还有2个和$watch相关的函数：</p>
+</blockquote>
+<p>$watchGroup(watchExpressions, listener);</p>
+<p>$watchCollection(obj, listener);</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular-js/" rel="tag">#angular.js</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/23/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -294,6 +460,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/23/$watch的用法/"
+           data-title="『$watch的用法』" data-url="http://474903784.github.io/2016/07/23/$watch的用法/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -313,8 +487,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -402,6 +585,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#watch简单使用"><span class="nav-number">1.</span> <span class="nav-text">$watch简单使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#watch性能问题"><span class="nav-number">2.</span> <span class="nav-text">watch性能问题</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -498,6 +692,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
