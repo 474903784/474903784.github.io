@@ -4,6 +4,59 @@
   
     
     <entry>
+      <title><![CDATA[在Linux下安装JDK8.0]]></title>
+      <url>http://474903784.github.io/2016/08/20/%E5%9C%A8Linux%E4%B8%8B%E5%AE%89%E8%A3%85JDK8.0/</url>
+      <content type="html"><![CDATA[<p>最近项目需要发布，采用集群服务器，现在要把服务器从Windows中转到Linux下，所以在此把Linux的部分服务器环境配置记录下，方便供以后参考。</p>
+<h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p>系统环境：centos-7.2<br>安装方式：rpm安装<br>软件：jdk-8u101-linux-x64.rpm<br>下载地址：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p>
+<a id="more"></a>
+<h3 id="检验系统原版本"><a href="#检验系统原版本" class="headerlink" title="检验系统原版本"></a>检验系统原版本</h3><pre><code># java -version
+</code></pre><p><img src="http://i.imgur.com/3eeacSc.png" alt=""></p>
+<p>进一步查看JDK信息：   </p>
+<pre><code># rpm -qa | grep jdk  
+</code></pre><p><img src="http://i.imgur.com/rBfNiHp.png" alt=""></p>
+<p>卸载jdk，执行以下操作：</p>
+<pre><code># rpm -e -nodeps jdk1.8.0_101-1.8.0_101-fcs.x86_64
+</code></pre><h3 id="下载-JDK"><a href="#下载-JDK" class="headerlink" title="下载 JDK"></a>下载 JDK</h3><p>进入/usr/java文件夹  </p>
+<pre><code># cd /usr/java
+</code></pre><p>如果不存在，新建文件夹再进入</p>
+<pre><code># mkdir /usr/java
+</code></pre><p>使用wget命令下载 JDK8.0  </p>
+<pre><code>#wget -c http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.rpm
+</code></pre><p><img src="http://i.imgur.com/shXZGCq.png" alt=""></p>
+<h3 id="安装-JDK"><a href="#安装-JDK" class="headerlink" title="安装 JDK"></a>安装 JDK</h3><pre><code># rpm -ivh jdk-8u101-linux-x64.rpm  
+</code></pre><p>JKD默认安装在 /usr/java 中。<br><img src="http://i.imgur.com/a58uRmn.png" alt=""></p>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>修改系统环境变量文件：</p>
+<pre><code># vi /etc/profile
+</code></pre><p>向文件里面追加以下内容：</p>
+<pre><code>JAVA_HOME=/usr/java/jdk1.8.0_101
+JRE_HOME=/usr/java/jdk1.8.0_101/jre
+PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+export JAVA_HOME JRE_HOME PATH CLASSPATH
+</code></pre><p>修改后如下图：<br><img src="http://i.imgur.com/kORPy1H.png" alt=""></p>
+<p>为使修改生效，执行以下命令：</p>
+<pre><code># source /etc/profile  //使修改立即生效
+# echo $PATH   //查看PATH值
+</code></pre><h3 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h3><pre><code># java
+# javac
+# java -version
+</code></pre><p><img src="http://i.imgur.com/3eeacSc.png" alt=""></p>
+<h3 id="可能问题"><a href="#可能问题" class="headerlink" title="可能问题"></a>可能问题</h3><p>a、</p>
+<p><img src="http://i.imgur.com/WyT0nwP.png" alt=""></p>
+<p>出现此问题，是因为64位系统中安装了32位程序。<br>解决方法：</p>
+<pre><code># yum install glibc.i686
+</code></pre><p>参考：<a href="http://www.111cn.net/sys/linux/55374.htm" target="_blank" rel="external">http://www.111cn.net/sys/linux/55374.htm</a></p>
+<p>b、<br>查询 JDK 版本号</p>
+<pre><code># java -version
+</code></pre><p>出现以下情况：</p>
+<pre><code>Error occurred during initialization of VM
+java/lang/NoClassDefFoundError: java/lang/Object
+</code></pre><p>是因为/usr/java/jdk/lib目录下没有tools.jar或/usr/java/jre/lib目录下没有rt.jar。（从/usr/java/jdk1.8.0_101/jre/lib目录下复制rt.jar到/usr/java/jre/lib）</p>
+<p>解决方法：参考<a href="http://babyhe.blog.51cto.com/1104064/1045485/" target="_blank" rel="external">http://babyhe.blog.51cto.com/1104064/1045485/</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[初认识中间件之消息服务]]></title>
       <url>http://474903784.github.io/2016/07/25/%E5%88%9D%E8%AF%86%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B9%8B%E6%B6%88%E6%81%AF%E6%9C%8D%E5%8A%A1/</url>
       <content type="html"><![CDATA[<h3 id="一、消息队列概述"><a href="#一、消息队列概述" class="headerlink" title="一、消息队列概述"></a>一、消息队列概述</h3><p>消息队列中间件是分布式系统中重要的组件，主要解决应用耦合，异步消息，流量削锋等问题。实现高性能，高可用，可伸缩和最终一致性架构。是大型分布式系统不可缺少的中间件。<br>目前在生产环境，使用较多的消息队列有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ等。<br><a id="more"></a></p>

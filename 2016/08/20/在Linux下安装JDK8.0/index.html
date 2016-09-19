@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="教程,Hexo," />
+  <meta name="keywords" content="Linux," />
 
 
 
@@ -84,16 +84,27 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+<meta name="description" content="最近项目需要发布，采用集群服务器，现在要把服务器从Windows中转到Linux下，所以在此把Linux的部分服务器环境配置记录下，方便供以后参考。
+安装说明系统环境：centos-7.2安装方式：rpm安装软件：jdk-8u101-linux-x64.rpm下载地址：http://www.oracle.com/technetwork/java/javase/downloads/jdk8-down">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://474903784.github.io/2015/03/23/hello-world/index.html">
+<meta property="og:title" content="在Linux下安装JDK8.0">
+<meta property="og:url" content="http://474903784.github.io/2016/08/20/在Linux下安装JDK8.0/index.html">
 <meta property="og:site_name" content="星火燎猿">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
-<meta property="og:updated_time" content="2016-09-06T01:14:11.447Z">
+<meta property="og:description" content="最近项目需要发布，采用集群服务器，现在要把服务器从Windows中转到Linux下，所以在此把Linux的部分服务器环境配置记录下，方便供以后参考。
+安装说明系统环境：centos-7.2安装方式：rpm安装软件：jdk-8u101-linux-x64.rpm下载地址：http://www.oracle.com/technetwork/java/javase/downloads/jdk8-down">
+<meta property="og:image" content="http://i.imgur.com/3eeacSc.png">
+<meta property="og:image" content="http://i.imgur.com/rBfNiHp.png">
+<meta property="og:image" content="http://i.imgur.com/shXZGCq.png">
+<meta property="og:image" content="http://i.imgur.com/a58uRmn.png">
+<meta property="og:image" content="http://i.imgur.com/kORPy1H.png">
+<meta property="og:image" content="http://i.imgur.com/3eeacSc.png">
+<meta property="og:image" content="http://i.imgur.com/WyT0nwP.png">
+<meta property="og:updated_time" content="2016-09-19T13:47:14.081Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+<meta name="twitter:title" content="在Linux下安装JDK8.0">
+<meta name="twitter:description" content="最近项目需要发布，采用集群服务器，现在要把服务器从Windows中转到Linux下，所以在此把Linux的部分服务器环境配置记录下，方便供以后参考。
+安装说明系统环境：centos-7.2安装方式：rpm安装软件：jdk-8u101-linux-x64.rpm下载地址：http://www.oracle.com/technetwork/java/javase/downloads/jdk8-down">
+<meta name="twitter:image" content="http://i.imgur.com/3eeacSc.png">
 
 
 
@@ -114,9 +125,9 @@
 
 
 
-  <link rel="canonical" href="http://474903784.github.io/2015/03/23/hello-world/"/>
+  <link rel="canonical" href="http://474903784.github.io/2016/08/20/在Linux下安装JDK8.0/"/>
 
-  <title> Hello World | 星火燎猿 </title>
+  <title> 在Linux下安装JDK8.0 | 星火燎猿 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -289,7 +300,7 @@
             
             
               
-                Hello World
+                在Linux下安装JDK8.0
               
             
           </h1>
@@ -301,8 +312,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-03-23T19:33:59+08:00" content="2015-03-23">
-              2015-03-23
+            <time itemprop="dateCreated" datetime="2016-08-20T11:21:41+08:00" content="2016-08-20">
+              2016-08-20
             </time>
           </span>
 
@@ -315,8 +326,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">Hexo</span>
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
 
@@ -331,8 +342,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/03/23/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/23/hello-world/" itemprop="commentsCount"></span>
+                <a href="/2016/08/20/在Linux下安装JDK8.0/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/20/在Linux下安装JDK8.0/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -355,16 +366,53 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+        <p>最近项目需要发布，采用集群服务器，现在要把服务器从Windows中转到Linux下，所以在此把Linux的部分服务器环境配置记录下，方便供以后参考。</p>
+<h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p>系统环境：centos-7.2<br>安装方式：rpm安装<br>软件：jdk-8u101-linux-x64.rpm<br>下载地址：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p>
 <a id="more"></a>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+<h3 id="检验系统原版本"><a href="#检验系统原版本" class="headerlink" title="检验系统原版本"></a>检验系统原版本</h3><pre><code># java -version
+</code></pre><p><img src="http://i.imgur.com/3eeacSc.png" alt=""></p>
+<p>进一步查看JDK信息：   </p>
+<pre><code># rpm -qa | grep jdk  
+</code></pre><p><img src="http://i.imgur.com/rBfNiHp.png" alt=""></p>
+<p>卸载jdk，执行以下操作：</p>
+<pre><code># rpm -e -nodeps jdk1.8.0_101-1.8.0_101-fcs.x86_64
+</code></pre><h3 id="下载-JDK"><a href="#下载-JDK" class="headerlink" title="下载 JDK"></a>下载 JDK</h3><p>进入/usr/java文件夹  </p>
+<pre><code># cd /usr/java
+</code></pre><p>如果不存在，新建文件夹再进入</p>
+<pre><code># mkdir /usr/java
+</code></pre><p>使用wget命令下载 JDK8.0  </p>
+<pre><code>#wget -c http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.rpm
+</code></pre><p><img src="http://i.imgur.com/shXZGCq.png" alt=""></p>
+<h3 id="安装-JDK"><a href="#安装-JDK" class="headerlink" title="安装 JDK"></a>安装 JDK</h3><pre><code># rpm -ivh jdk-8u101-linux-x64.rpm  
+</code></pre><p>JKD默认安装在 /usr/java 中。<br><img src="http://i.imgur.com/a58uRmn.png" alt=""></p>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>修改系统环境变量文件：</p>
+<pre><code># vi /etc/profile
+</code></pre><p>向文件里面追加以下内容：</p>
+<pre><code>JAVA_HOME=/usr/java/jdk1.8.0_101
+JRE_HOME=/usr/java/jdk1.8.0_101/jre
+PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+export JAVA_HOME JRE_HOME PATH CLASSPATH
+</code></pre><p>修改后如下图：<br><img src="http://i.imgur.com/kORPy1H.png" alt=""></p>
+<p>为使修改生效，执行以下命令：</p>
+<pre><code># source /etc/profile  //使修改立即生效
+# echo $PATH   //查看PATH值
+</code></pre><h3 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h3><pre><code># java
+# javac
+# java -version
+</code></pre><p><img src="http://i.imgur.com/3eeacSc.png" alt=""></p>
+<h3 id="可能问题"><a href="#可能问题" class="headerlink" title="可能问题"></a>可能问题</h3><p>a、</p>
+<p><img src="http://i.imgur.com/WyT0nwP.png" alt=""></p>
+<p>出现此问题，是因为64位系统中安装了32位程序。<br>解决方法：</p>
+<pre><code># yum install glibc.i686
+</code></pre><p>参考：<a href="http://www.111cn.net/sys/linux/55374.htm" target="_blank" rel="external">http://www.111cn.net/sys/linux/55374.htm</a></p>
+<p>b、<br>查询 JDK 版本号</p>
+<pre><code># java -version
+</code></pre><p>出现以下情况：</p>
+<pre><code>Error occurred during initialization of VM
+java/lang/NoClassDefFoundError: java/lang/Object
+</code></pre><p>是因为/usr/java/jdk/lib目录下没有tools.jar或/usr/java/jre/lib目录下没有rt.jar。（从/usr/java/jdk1.8.0_101/jre/lib目录下复制rt.jar到/usr/java/jre/lib）</p>
+<p>解决方法：参考<a href="http://babyhe.blog.51cto.com/1104064/1045485/" target="_blank" rel="external">http://babyhe.blog.51cto.com/1104064/1045485/</a></p>
 
       
     </div>
@@ -387,9 +435,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/教程/" rel="tag">#教程</a>
-          
-            <a href="/tags/Hexo/" rel="tag">#Hexo</a>
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
           
         </div>
       
@@ -398,13 +444,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/07/25/初识中间件之消息服务/" rel="next" title="初认识中间件之消息服务">
+                <i class="fa fa-chevron-left"></i> 初认识中间件之消息服务
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/07/23/$watch的用法/" rel="prev" title="『$watch的用法』">
-                『$watch的用法』 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -430,8 +476,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/03/23/hello-world/"
-           data-title="Hello World" data-url="http://474903784.github.io/2015/03/23/hello-world/">
+      <div class="ds-thread" data-thread-key="2016/08/20/在Linux下安装JDK8.0/"
+           data-title="在Linux下安装JDK8.0" data-url="http://474903784.github.io/2016/08/20/在Linux下安装JDK8.0/">
       </div>
     
   </div>
@@ -560,7 +606,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装说明"><span class="nav-number">1.</span> <span class="nav-text">安装说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检验系统原版本"><span class="nav-number">2.</span> <span class="nav-text">检验系统原版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载-JDK"><span class="nav-number">3.</span> <span class="nav-text">下载 JDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-JDK"><span class="nav-number">4.</span> <span class="nav-text">安装 JDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置环境变量"><span class="nav-number">5.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证安装"><span class="nav-number">6.</span> <span class="nav-text">验证安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可能问题"><span class="nav-number">7.</span> <span class="nav-text">可能问题</span></a></li></ol></div>
             
           </div>
         </section>
