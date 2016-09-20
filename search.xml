@@ -4,8 +4,47 @@
   
     
     <entry>
+      <title><![CDATA[CentOS7.2下解压ZIP文件]]></title>
+      <url>http://474903784.github.io/2016/08/21/CentOS7.2%E4%B8%8B%E8%A7%A3%E5%8E%8BZIP%E6%96%87%E4%BB%B6/</url>
+      <content type="html"><![CDATA[<p>项目开发环境是自己电脑WINDOWS系统，压缩后是ZIP文件，需要在Linux下解压部署，需要使用到ZIP解压。</p>
+<h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p>系统环境：centos-7.2<br>安装方式：rpm安装<br>软件：unzip</p>
+<a id="more"></a>
+<h3 id="安装-unzip"><a href="#安装-unzip" class="headerlink" title="安装 unzip"></a>安装 unzip</h3><pre><code># yum install unzip
+</code></pre><p><img src="http://i.imgur.com/PKOpZ6D.png" alt=""></p>
+<h3 id="使用命令详解"><a href="#使用命令详解" class="headerlink" title="使用命令详解"></a>使用命令详解</h3><ol>
+<li><p>把/home目录下面的mydata目录压缩为mydata.zip   </p>
+<pre><code>zip -r mydata.zip mydata #压缩mydata目录 
+</code></pre></li>
+<li><p>把/home目录下面的mydata.zip解压到mydatabak目录里面 </p>
+<pre><code>unzip mydata.zip -d mydatabak 
+</code></pre></li>
+<li><p>把/home目录下面的abc文件夹和123.txt压缩成为abc123.zip </p>
+<pre><code>zip -r abc123.zip abc 123.txt 
+</code></pre></li>
+<li><p>把/home目录下面的wwwroot.zip直接解压到/home目录里面 </p>
+<pre><code>unzip wwwroot.zip 
+</code></pre></li>
+<li><p>把/home目录下面的abc12.zip、abc23.zip、abc34.zip同时解压到/home目录里面 </p>
+<pre><code>unzip abc*.zip 
+</code></pre></li>
+<li><p>查看把/home目录下面的wwwroot.zip里面的内容 </p>
+<pre><code>unzip -v wwwroot.zip 
+</code></pre></li>
+<li><p>验证/home目录下面的wwwroot.zip是否完整 </p>
+<pre><code>unzip -t wwwroot.zip 
+</code></pre></li>
+<li><p>把/home目录下面wwwroot.zip里面的所有文件解压到第一级目录  </p>
+<pre><code>unzip -j wwwroot.zip
+</code></pre></li>
+</ol>
+<p><strong>主要参数</strong></p>
+<p>– -c：将解压缩的结果<br>– -l：显示压缩文件内所包含的文件<br>– -p：与-c参数类似，会将解压缩的结果显示到屏幕上，但不会执行任何的转换<br>– -t：检查压缩文件是否正确<br>– -u：与-f参数类似，但是除了更新现有的文件外，也会将压缩文件中的其它文件解压缩到目录中<br>-v：执行是时显示详细的信息<br>-z：仅显示压缩文件的备注文字<br>-a：对文本文件进行必要的字符转换<br>-b：不要对文本文件进行字符转换<br>-C：压缩文件中的文件名称区分大小写<br>-j：不处理压缩文件中原有的目录路径<br>-L：将压缩文件中的全部文件名改为小写<br>-M：将输出结果送到more程序处理<br>-n：解压缩时不要覆盖原有的文件<br>-o：不必先询问用户，unzip执行后覆盖原有文件<br>-P：使用zip的密码选项<br>-q：执行时不显示任何信息<br>-s：将文件名中的空白字符转换为底线字符<br>-V：保留VMS的文件版本信息<br>-X：解压缩时同时回存文件原来的UID/GID  </p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[在Linux下安装JDK8.0]]></title>
-      <url>http://474903784.github.io/2016/08/20/%E5%9C%A8Linux%E4%B8%8B%E5%AE%89%E8%A3%85JDK8.0/</url>
+      <url>http://474903784.github.io/2016/08/20/%E5%9C%A8Linux%E4%B8%8B%E5%AE%89%E8%A3%85JDK8.0%20-%20%E5%89%AF%E6%9C%AC/</url>
       <content type="html"><![CDATA[<p>最近项目需要发布，采用集群服务器，现在要把服务器从Windows中转到Linux下，所以在此把Linux的部分服务器环境配置记录下，方便供以后参考。</p>
 <h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p>系统环境：centos-7.2<br>安装方式：rpm安装<br>软件：jdk-8u101-linux-x64.rpm<br>下载地址：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p>
 <a id="more"></a>
