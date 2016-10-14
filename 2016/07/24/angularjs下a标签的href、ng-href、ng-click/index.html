@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="liuwenxing" />
+  <meta name="keywords" content="angular.js," />
 
 
 
@@ -84,15 +84,16 @@
 
 
 
-<meta name="description" content="将来的你，一定会感激现在拼命的自己！">
-<meta property="og:type" content="website">
-<meta property="og:title" content="星火燎猿">
-<meta property="og:url" content="http://474903784.github.io/archives/2015/03/index.html">
+<meta name="description" content="对于今天学习的a标签下的href、ng-href、ng-click的比较做下总结。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="『angularjs下a标签的href、ng-href、ng-click』">
+<meta property="og:url" content="http://474903784.github.io/2016/07/24/angularjs下a标签的href、ng-href、ng-click/index.html">
 <meta property="og:site_name" content="星火燎猿">
-<meta property="og:description" content="将来的你，一定会感激现在拼命的自己！">
+<meta property="og:description" content="对于今天学习的a标签下的href、ng-href、ng-click的比较做下总结。">
+<meta property="og:updated_time" content="2016-10-14T14:57:40.744Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="星火燎猿">
-<meta name="twitter:description" content="将来的你，一定会感激现在拼命的自己！">
+<meta name="twitter:title" content="『angularjs下a标签的href、ng-href、ng-click』">
+<meta name="twitter:description" content="对于今天学习的a标签下的href、ng-href、ng-click的比较做下总结。">
 
 
 
@@ -113,9 +114,9 @@
 
 
 
-  <link rel="canonical" href="http://474903784.github.io/archives/2015/03/"/>
+  <link rel="canonical" href="http://474903784.github.io/2016/07/24/angularjs下a标签的href、ng-href、ng-click/"/>
 
-  <title> 归档 | 星火燎猿 </title>
+  <title> 『angularjs下a标签的href、ng-href、ng-click』 | 星火燎猿 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -146,7 +147,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -267,66 +268,177 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 7 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
 
-      
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                『angularjs下a标签的href、ng-href、ng-click』
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-24T21:38:54+08:00" content="2016-07-24">
+              2016-07-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/angular-js/" itemprop="url" rel="index">
+                    <span itemprop="name">angular.js</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/24/angularjs下a标签的href、ng-href、ng-click/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/24/angularjs下a标签的href、ng-href、ng-click/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
+        <p>对于今天学习的a标签下的href、ng-href、ng-click的比较做下总结。</p>
+<a id="more"></a>
+<h3 id="href"><a href="#href" class="headerlink" title="href"></a>href</h3><pre><code>&lt;a href=&quot;&quot;&gt;点击&lt;/a&gt;
+&lt;a href=&quot;javascript:void(0)&quot;&gt;点击&lt;/a&gt;
+</code></pre><p>当href属性为空或者设置为javascript:void(0)时，点击的时候页面都不会刷新了。</p>
+<h3 id="ng-href"><a href="#ng-href" class="headerlink" title="ng-href"></a>ng-href</h3><pre><code>&lt;a href=&quot;/aaa/{{num}}&quot;&gt;点击&lt;/a&gt;
+</code></pre><p>angularjs的执行都是在DOM渲染完成之后，如果我们在angularjs执行这个表达式之前点击了链接，那么就直接访问了/aaa/，一般都会跳转到404页面，用户体验太烂了。</p>
+<pre><code>&lt;a ng-href=&quot;/aaa/{{num}}&quot;&gt;点击&lt;/a&gt;
+</code></pre><p>使用了ng-href就就可以避免出现这种问题。</p>
+<h3 id="ng-click"><a href="#ng-click" class="headerlink" title="ng-click"></a>ng-click</h3><pre><code>&lt;body ng-app=&quot;app&quot;&gt;
+
+    &lt;div ng-controller=&quot;ctrl&quot;&gt;
+        &lt;a ng-click=&quot;click()&quot;&gt;点击&lt;/a&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        angular.module(&quot;app&quot;,[])
+            .controller(&quot;ctrl&quot;,function($scope){
+                $scope.click = function(){
+                    alert(&quot;点击&quot;);
+                }
+            })
+    &lt;/script&gt;
+
+&lt;/body&gt;
+</code></pre><p>ng-click=”click()”将调用$scope中的click()方法。</p>
+
+      
+    </div>
+
+    <div>
+      
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2015">2015</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular-js/" rel="tag">#angular.js</a>
+          
         </div>
       
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/24/$location获取url及参数的用法/" rel="next" title="『$location获取url及参数的用法』">
+                <i class="fa fa-chevron-left"></i> 『$location获取url及参数的用法』
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/25/初识中间件之消息服务/" rel="prev" title="初认识中间件之消息服务">
+                初认识中间件之消息服务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2015/03/23/hello-world/" itemprop="url">
-              
-                <span itemprop="name">Hello World</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2015-03-23T19:33:59+08:00"
-              content="2015-03-23" >
-          03-23
-        </time>
-      </div>
-
-    </header>
+      
+    </footer>
   </article>
 
 
 
-    
-
-  </section>
-
-  
-
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -334,6 +446,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/24/angularjs下a标签的href、ng-href、ng-click/"
+           data-title="『angularjs下a标签的href、ng-href、ng-click』" data-url="http://474903784.github.io/2016/07/24/angularjs下a标签的href、ng-href、ng-click/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -353,8 +473,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -442,6 +571,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#href"><span class="nav-number">1.</span> <span class="nav-text">href</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ng-href"><span class="nav-number">2.</span> <span class="nav-text">ng-href</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ng-click"><span class="nav-number">3.</span> <span class="nav-text">ng-click</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -538,11 +678,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
 
 
   
