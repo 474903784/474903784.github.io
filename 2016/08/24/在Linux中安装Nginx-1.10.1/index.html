@@ -1,0 +1,930 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nginx,Linux,CentOS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Nginx (“engine x”) 是一个高性能的 HTTP 和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。现在项目需要搭载集群服务器，故采用Nginx反向代理负载均衡来实现。安装环境CentOS 7.2，安装Nginx版本1.10.1。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Linux中安装Nginx-1.10.1">
+<meta property="og:url" content="http://474903784.github.io/2016/08/24/在Linux中安装Nginx-1.10.1/index.html">
+<meta property="og:site_name" content="星火燎猿">
+<meta property="og:description" content="Nginx (“engine x”) 是一个高性能的 HTTP 和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。现在项目需要搭载集群服务器，故采用Nginx反向代理负载均衡来实现。安装环境CentOS 7.2，安装Nginx版本1.10.1。">
+<meta property="og:image" content="http://i.imgur.com/sOQR5tu.jpg">
+<meta property="og:updated_time" content="2016-12-08T15:11:32.511Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Linux中安装Nginx-1.10.1">
+<meta name="twitter:description" content="Nginx (“engine x”) 是一个高性能的 HTTP 和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。现在项目需要搭载集群服务器，故采用Nginx反向代理负载均衡来实现。安装环境CentOS 7.2，安装Nginx版本1.10.1。">
+<meta name="twitter:image" content="http://i.imgur.com/sOQR5tu.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://474903784.github.io/2016/08/24/在Linux中安装Nginx-1.10.1/"/>
+
+  <title> 在Linux中安装Nginx-1.10.1 | 星火燎猿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a3bc06683d39524336abd3fdd02ba6a5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">星火燎猿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                在Linux中安装Nginx-1.10.1
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-24T16:26:52+08:00" content="2016-08-24">
+              2016-08-24
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/24/在Linux中安装Nginx-1.10.1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/24/在Linux中安装Nginx-1.10.1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>　　Nginx (“engine x”) 是一个高性能的 HTTP 和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。现在项目需要搭载集群服务器，故采用Nginx反向代理负载均衡来实现。安装环境CentOS 7.2，安装Nginx版本1.10.1。</p>
+<a id="more"></a>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>1、安装必备工具：</p>
+<pre><code>$ yum -y install gcc gcc-c++ autoconf automake
+$ yum -y install zlib zlib-devel openssl openssl-devel pcre-devel
+</code></pre><p>说明：<br>pcre: 用来作地址重写的功能。<br>zlib：nginx 的gzip模块,传输数据打包，省流量（但消耗资源）。<br>openssl：提供ssl加密协议。</p>
+<p>2、新建一个系统级用户组和匿名用户，以及下面编译时使用。</p>
+<pre><code>$ sudo groupadd -r nginx
+$ sudo useradd -s /sbin/nologin -g nginx -r nginx-user
+</code></pre><h2 id="下载-amp-解压-amp-编译安装"><a href="#下载-amp-解压-amp-编译安装" class="headerlink" title="下载&amp;解压&amp;编译安装"></a>下载&amp;解压&amp;编译安装</h2><p>1、下载Nginx，下载最新版本查看链接：<a href="http://nginx.org/en/download.html" target="_blank" rel="external">http://nginx.org/en/download.html</a></p>
+<pre><code>$ cd /usr/local
+$ wget -c http://nginx.org/download/nginx-1.10.1.tar.gz
+</code></pre><p>2、解压</p>
+<pre><code>$ tar -zxvf nginx-1.9.2.tar.gz
+</code></pre><p>3、编译</p>
+<pre><code>$ cd nginx-1.9.2/
+
+$ ./configure \
+--prefix=/etc/nginx \
+--sbin-path=/usr/sbin/nginx \
+--conf-path=/etc/nginx/nginx.conf \
+--error-log-path=/var/log/nginx/error.log \
+--http-log-path=/var/log/nginx/access.log \
+--pid-path=/var/run/nginx.pid \
+--lock-path=/var/run/nginx.lock \
+--http-client-body-temp-path=/var/cache/nginx/client_temp \
+--http-proxy-temp-path=/var/cache/nginx/proxy_temp \
+--http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
+--http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
+--http-scgi-temp-path=/var/cache/nginx/scgi_temp \
+--user=nginx \--group=nginx \
+--with-http_ssl_module \
+--with-http_realip_module \
+--with-http_addition_module \
+--with-http_sub_module \
+--with-http_dav_module \
+--with-http_flv_module \
+--with-http_mp4_module \
+--with-http_gunzip_module \
+--with-http_gzip_static_module \
+--with-http_random_index_module \
+--with-http_secure_link_module \
+--with-http_stub_status_module \
+--with-http_auth_request_module \
+--with-mail \
+--with-mail_ssl_module \
+--with-file-aio \
+--with-ipv6 \
+--with-http_spdy_module \
+--with-cc-opt=&apos;-O2 -g -pipe -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic&apos;
+</code></pre><p>其中 <code>--with-http_spdy_module \</code>在1.10.1版本中可能不需要。<br>上面的参数的作用可以通过<code>--help</code>来查看。</p>
+<pre><code>$ ./configure --help
+</code></pre><p>编译日志：</p>
+<blockquote>
+<p>checking for OS</p>
+<ul>
+<li>Linux 3.10.0-229.4.2.el7.x86_64 x86_64<br>checking for C compiler … found</li>
+<li>using GNU C compiler</li>
+<li>gcc version: 4.8.3 20140911 (Red Hat 4.8.3-9) (GCC)<br>checking for gcc -pipe switch … found<br>checking for gcc builtin atomic operations … found<br>checking for C99 variadic macros … found<br>checking for gcc variadic macros … found<br>checking for unistd.h … found<br>checking for inttypes.h … found<br>checking for limits.h … found<br>checking for sys/filio.h … not found<br>checking for sys/param.h … found<br>checking for sys/mount.h … found<br>checking for sys/statvfs.h … found<br>checking for crypt.h … found<br>checking for Linux specific features<br>checking for epoll … found<br>checking for EPOLLRDHUP … found<br>checking for O_PATH … found<br>checking for sendfile() … found<br>checking for sendfile64() … found<br>checking for sys/prctl.h … found<br>checking for prctl(PR_SET_DUMPABLE) … found<br>checking for sched_setaffinity() … found<br>checking for crypt_r() … found<br>checking for sys/vfs.h … found<br>checking for poll() … found<br>checking for /dev/poll … not found<br>checking for kqueue … not found<br>checking for crypt() … not found<br>checking for crypt() in libcrypt … found<br>checking for F_READAHEAD … not found<br>checking for posix_fadvise() … found<br>checking for O_DIRECT … found<br>checking for F_NOCACHE … not found<br>checking for directio() … not found<br>checking for statfs() … found<br>checking for statvfs() … found<br>checking for dlopen() … not found<br>checking for dlopen() in libdl … found<br>checking for sched_yield() … found<br>checking for SO_SETFIB … not found<br>checking for SO_REUSEPORT … found<br>checking for SO_ACCEPTFILTER … not found<br>checking for TCP_DEFER_ACCEPT … found<br>checking for TCP_KEEPIDLE … found<br>checking for TCP_FASTOPEN … not found<br>checking for TCP_INFO … found<br>checking for accept4() … found<br>checking for eventfd() … found<br>checking for int size … 4 bytes<br>checking for long size … 8 bytes<br>checking for long long size … 8 bytes<br>checking for void * size … 8 bytes<br>checking for uint64_t … found<br>checking for sig_atomic_t … found<br>checking for sig_atomic_t size … 4 bytes<br>checking for socklen_t … found<br>checking for in_addr_t … found<br>checking for in_port_t … found<br>checking for rlim_t … found<br>checking for uintptr_t … uintptr_t found<br>checking for system byte ordering … little endian<br>checking for size_t size … 8 bytes<br>checking for off_t size … 8 bytes<br>checking for time_t size … 8 bytes<br>checking for setproctitle() … not found<br>checking for pread() … found<br>checking for pwrite() … found<br>checking for sys_nerr … found<br>checking for localtime_r() … found<br>checking for posix_memalign() … found<br>checking for memalign() … found<br>checking for mmap(MAP_ANON|MAP_SHARED) … found<br>checking for mmap(“/dev/zero”, MAP_SHARED) … found<br>checking for System V shared memory … found<br>checking for POSIX semaphores … not found<br>checking for POSIX semaphores in libpthread … found<br>checking for struct msghdr.msg_control … found<br>checking for ioctl(FIONBIO) … found<br>checking for struct tm.tm_gmtoff … found<br>checking for struct dirent.d_namlen … not found<br>checking for struct dirent.d_type … found<br>checking for sysconf(_SC_NPROCESSORS_ONLN) … found<br>checking for openat(), fstatat() … found<br>checking for getaddrinfo() … found<br>checking for PCRE library … found<br>checking for PCRE JIT support … found<br>checking for OpenSSL library … found<br>checking for zlib library … found<br>creating objs/Makefile</li>
+</ul>
+<p>Configuration summary</p>
+<ul>
+<li>using system PCRE library</li>
+<li>using system OpenSSL library</li>
+<li>md5: using OpenSSL library</li>
+<li>sha1: using OpenSSL library</li>
+<li>using system zlib library</li>
+</ul>
+<p>  nginx path prefix: “/usr”<br>  nginx binary file: “/usr/sbin/nginx”<br>  nginx configuration prefix: “/etc/nginx”<br>  nginx configuration file: “/etc/nginx/nginx.conf”<br>  nginx pid file: “/var/run/nginx/nginx.pid”<br>  nginx error log file: “/var/log/nginx/error.log”<br>  nginx http access log file: “/var/log/nginx/http.log”<br>  nginx http client request body temporary files: “/var/tmp/nginx/client”<br>  nginx http proxy temporary files: “/var/tmp/nginx/proxy”<br>  nginx http fastcgi temporary files: “/var/tmp/nginx/fcgi”<br>  nginx http uwsgi temporary files: “uwsgi_temp”<br>  nginx http scgi temporary files: “scgi_temp”</p>
+</blockquote>
+<p>4、安装</p>
+<pre><code>$ make &amp;&amp; make install
+</code></pre><p>5、启动</p>
+<pre><code>$ nginx -c /etc/nginx/nginx.conf
+</code></pre><p>如果提示缺什么包，直接用yum安装</p>
+<pre><code>$ yum install xxxxx
+</code></pre><p>如果提示：</p>
+<blockquote>
+<p>nginx: [emerg] mkdir() “/var/tmp/nginx/client_temp” failed (2: No such file or directory)</p>
+</blockquote>
+<p>则用管理员去mkdir 创建文件夹后再启动。</p>
+<pre><code>$ mkdir -p /var/tmp/nginx/client_temp
+</code></pre><h2 id="相关指令"><a href="#相关指令" class="headerlink" title="相关指令"></a>相关指令</h2><p>1、查看Nginx的安装目录：</p>
+<pre><code>$ whereis nginx
+</code></pre><p>2、检查配置文件是否正确：</p>
+<pre><code>$ cd /etc/nginx
+$ nginx -t
+</code></pre><p>3、启动：</p>
+<pre><code>$ nginx -c /etc/nginx/nginx.conf
+</code></pre><p>4、重启：</p>
+<pre><code>$ cd /etc/nginx
+$ nginx -s reload
+</code></pre><p>5、停止服务器：</p>
+<pre><code>$ ps -ef | grep nginx
+$kill -9 [pid] [pid2]
+</code></pre><p><img src="http://i.imgur.com/sOQR5tu.jpg" alt="停止服务器"></p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p>如果安装Nginx前的准备工作没有新建系统级用户组和匿名用户，启动Nginx时会出现如下情况：</p>
+<blockquote>
+<p>nginx: [emerg] getpwnam(“nginx”) failed</p>
+</blockquote>
+<p>解决方法：</p>
+<pre><code>$useradd -r -M nginx
+</code></pre><p>解决方法其他参考链接：</p>
+<ul>
+<li><a href="https://my.oschina.net/u/1036767/blog/210443" target="_blank" rel="external">https://my.oschina.net/u/1036767/blog/210443</a></li>
+<li><a href="http://blog.csdn.net/joeyon1985/article/details/46422715" target="_blank" rel="external">http://blog.csdn.net/joeyon1985/article/details/46422715</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nginx/" rel="tag">#Nginx</a>
+          
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+            <a href="/tags/CentOS/" rel="tag">#CentOS</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/22/在Linux中安装与配置Tomcat-8/" rel="next" title="在Linux中安装与配置Tomcat-8">
+                <i class="fa fa-chevron-left"></i> 在Linux中安装与配置Tomcat-8
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/25/在Linux中安装Redis-3.2.3/" rel="prev" title="在Linux中安装Redis-3.2.3">
+                在Linux中安装Redis-3.2.3 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/24/在Linux中安装Nginx-1.10.1/"
+           data-title="在Linux中安装Nginx-1.10.1" data-url="http://474903784.github.io/2016/08/24/在Linux中安装Nginx-1.10.1/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Liu Wenxing" />
+          <p class="site-author-name" itemprop="name">Liu Wenxing</p>
+          <p class="site-description motion-element" itemprop="description">将来的你，一定会感激现在拼命的自己！</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=dEBDQE1ER0NMQDQFBVoXGxk" target="_blank" title="Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Mail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wpa.qq.com/msgrd?v=3&uin=474903784&site=qq&menu=yes" target="_blank" title="QQ">
+                  
+                    <i class="fa fa-fw fa-qq"></i>
+                  
+                  QQ
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/474903784" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/about/" target="_blank" title="Wechat">
+                  
+                    <i class="fa fa-fw fa-wechat"></i>
+                  
+                  Wechat
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载-amp-解压-amp-编译安装"><span class="nav-number">2.</span> <span class="nav-text">下载&解压&编译安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关指令"><span class="nav-number">3.</span> <span class="nav-text">相关指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number">4.</span> <span class="nav-text">常见问题</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Liu Wenxing</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"liuwenxing"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -4,6 +4,1171 @@
   
     
     <entry>
+      <title><![CDATA[设计模式-适配器模式（Adapter）]]></title>
+      <url>http://474903784.github.io/2016/10/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F%EF%BC%88Adapter%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p>　　如果一个类要实现一个具有很多抽象方法的接口，但是本身只需要实现接口中的部分方法便可以达成目的，所以此时就需要一个中间的过渡类，但此过渡类又不希望直接使用，所以将此类定义为抽象类最为合适，再让以后的子类直接继承该抽象类便可选择性的覆写所需要的方法，而此抽象类便是适配器类。</p>
+<a id="more"></a>
+<p>看一下类图：<br><img src="/images/设计模式-适配器模式（Adapter）/接口的适配器模式.jpg" alt="接口的适配器"></p>
+<p>这个很好理解，在实际开发中，我们也常会遇到这种接口中定义了太多的方法，以致于有时我们在一些实现类中并不是都需要。看代码：</p>
+<pre><code>public interface Sourceable {  
+
+    public void method1();  
+    public void method2();  
+    public void method3(); 
+}  
+
+public abstract class Wrapper implements Sourceable{  
+
+    public void method1(){}  
+    public void method2(){}  
+}  
+
+public class SourceSub1 extends Wrapper {  
+    public void method1(){  
+        System.out.println(&quot;the sourceable interface&apos;s first Sub1!&quot;);  
+    }  
+
+    public void method3(){ }
+
+} 
+
+public class SourceSub2 extends Wrapper {  
+    public void method2(){  
+        System.out.println(&quot;the sourceable interface&apos;s second Sub2!&quot;); 
+    }  
+
+    public void method3(){ } 
+
+}
+
+public class WrapperDemo {  
+
+    public static void main(String[] args) {  
+        Sourceable source1 = new SourceSub1();  
+        Sourceable source2 = new SourceSub2();  
+
+        source1.method1();  
+        source1.method2();  
+        source1.method3();  
+        source2.method1();  
+        source2.method2(); 
+        source2.method3(); 
+    }  
+} 
+</code></pre><p>测试输出：</p>
+<blockquote>
+<p>the sourceable interface’s first Sub1!<br>the sourceable interface’s second Sub2!</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[设计模式-观察者模式（Observer）]]></title>
+      <url>http://474903784.github.io/2016/10/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%EF%BC%88Observer%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p>所谓观察者模式，举个例子现在许多购房者都密切观察者房价的变化，当房价变化时，所有购房者都能观察到，以上的购房者属于观察者，这便是观察者模式。</p>
+<a id="more"></a>
+<p>　　观察者模式很好理解，类似于邮件订阅和RSS订阅，当我们浏览一些博客或wiki时，经常会看到RSS图标，就这的意思是，当你订阅了该文章，如果后续有更新，会及时通知你。其实，简单来讲就一句话：当一个对象变化时，其它依赖该对象的对象都会收到通知，并且随着变化！对象之间是一种一对多的关系。先来看看关系图：</p>
+<p><img src="/images/设计模式-观察者模式（Observer）/观察者模式.jpg" alt="观察者模式关系图"></p>
+<p>我解释下这些类的作用：MySubject类就是我们的主对象，Observer1和Observer2是依赖于MySubject的对象，当MySubject变化时，Observer1和Observer2必然变化。AbstractSubject类中定义着需要监控的对象列表，可以对其进行修改：增加或删除被监控对象，且当MySubject变化时，负责通知在列表内存在的对象。我们看实现代码：</p>
+<p>一个Observer接口：</p>
+<pre><code>public interface Observer {  
+    public void update();  
+}  
+</code></pre><p>两个实现类：</p>
+<pre><code>public class Observer1 implements Observer {  
+
+    @Override  
+    public void update() {  
+        System.out.println(&quot;observer1 has received!&quot;);  
+    }  
+}  
+
+public class Observer2 implements Observer {  
+
+    @Override  
+    public void update() {  
+        System.out.println(&quot;observer2 has received!&quot;);  
+    }  
+
+}  
+</code></pre><p>Subject接口及实现类：</p>
+<pre><code>public interface Subject {  
+
+    /*增加观察者*/  
+    public void add(Observer observer);  
+
+    /*删除观察者*/  
+    public void del(Observer observer);  
+
+    /*通知所有的观察者*/  
+    public void notifyObservers();  
+
+    /*自身的操作*/  
+    public void operation();  
+}  
+
+public abstract class AbstractSubject implements Subject {  
+
+    private Vector&lt;Observer&gt; vector = new Vector&lt;Observer&gt;();  
+    @Override  
+    public void add(Observer observer) {  
+        vector.add(observer);  
+    }  
+
+    @Override  
+    public void del(Observer observer) {  
+        vector.remove(observer);  
+    }  
+
+    @Override  
+    public void notifyObservers() {  
+        Enumeration&lt;Observer&gt; enumo = vector.elements();  
+        while(enumo.hasMoreElements()){  
+            enumo.nextElement().update();  
+        }  
+    }  
+}  
+
+public class MySubject extends AbstractSubject {  
+
+    @Override  
+    public void operation() {  
+        System.out.println(&quot;update self!&quot;);  
+        notifyObservers();  
+    }  
+
+}  
+</code></pre><p>测试类：</p>
+<pre><code>public class ObserverDemo {  
+
+    public static void main(String[] args) {  
+        Subject sub = new MySubject();  
+        sub.add(new Observer1());  
+        sub.add(new Observer2());  
+
+        sub.operation();  
+    }  
+
+}  
+</code></pre><p>输出：</p>
+<blockquote>
+<p>update self!<br>observer1 has received!<br>observer2 has received!</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[设计模式-代理模式（Proxy）]]></title>
+      <url>http://474903784.github.io/2016/10/17/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%EF%BC%88Proxy%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p>　　指由一个代理主题来操作真实主题，真实主题执行具体的业务操作，而代理主题负责其他相关业务的处理。比如生活中的通过代理访问网络，客户通过网络代理连接网络（具体业务），由代理服务器完成用户权限和访问限制等与上网相关的其他操作（相关业务）。</p>
+<a id="more"></a>
+<p>　　其实每个模式名称就表明了该模式的作用，代理模式就是多一个代理类出来，替原对象进行一些操作，比如我们在租房子的时候回去找中介，为什么呢？因为你对该地区房屋的信息掌握的不够全面，希望找一个更熟悉的人去帮你做，此处的代理就是这个意思。再如我们有的时候打官司，我们需要请律师，因为律师在法律方面有专长，可以替我们进行操作，表达我们的想法。先来看看关系图：</p>
+<p><img src="/images/设计模式-代理模式（Proxy）/代理模式.jpg" alt="代理模式关系图"></p>
+<p>根据上文的阐述，代理模式就比较容易的理解了，我们看下代码：</p>
+<pre><code>public interface Sourceable {  
+    public void method();  
+}  
+
+public class Source implements Sourceable {  
+
+    @Override  
+    public void method() {  
+        System.out.println(&quot;the original method!&quot;);  
+    }  
+} 
+
+public class Proxy implements Sourceable {  
+
+    private Source source;  
+    public Proxy(Sourceable source){  
+        this.source = source;  
+    }  
+    @Override  
+    public void method() {  
+        before();  
+        source.method();  
+        atfer();  
+    }  
+    private void atfer() {  
+        System.out.println(&quot;after proxy!&quot;);  
+    }  
+    private void before() {  
+        System.out.println(&quot;before proxy!&quot;);  
+    }  
+}  
+
+public class ProxyDemo {  
+
+    public static void main(String[] args) {  
+        Sourceable source = new Proxy(new Source());  
+        source.method();  
+    }  
+
+}
+</code></pre><p>输出：</p>
+<blockquote>
+<p>before proxy!<br>the original method!<br>after proxy!</p>
+</blockquote>
+<p>代理模式的应用场景：</p>
+<p>如果已有的方法在使用的时候需要对原有的方法进行改进，此时有两种办法：</p>
+<p>1、修改原有的方法来适应。这样违反了“对扩展开放，对修改关闭”的原则。</p>
+<p>2、就是采用一个代理类调用原有的方法，且对产生的结果进行控制。这种方法就是代理模式。</p>
+<p>使用代理模式，可以将功能划分的更加清晰，有助于后期维护！</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[设计模式-抽象工厂模式（Abstract Factory）]]></title>
+      <url>http://474903784.github.io/2016/10/16/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%EF%BC%88Abstract%20Factory%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p>　　工厂方法模式有一个问题就是，类的创建依赖工厂类，也就是说，如果想要拓展程序，必须对工厂类进行修改，这违背了闭包原则，所以，从设计角度考虑，有一定的问题，如何解决？</p>
+<a id="more"></a>
+<p>　　就用到抽象工厂模式，创建多个工厂类，这样一旦需要增加新的功能，直接增加新的工厂类就可以了，不需要修改之前的代码。因为抽象工厂不太好理解，我们先看看图，然后就和代码，就比较容易理解。</p>
+<p><img src="/images/设计模式-抽象工厂模式（Abstract Factory）/抽象工厂模式.jpg" alt="抽象工厂模式"></p>
+<p>请看例子：</p>
+<pre><code>public interface Sender {  
+    public void Send();  
+}  
+
+public class MailSender implements Sender {  
+    @Override  
+    public void Send() {  
+        System.out.println(&quot;this is mailsender!&quot;);  
+    }  
+} 
+
+public class SmsSender implements Sender {  
+
+    @Override  
+    public void Send() {  
+        System.out.println(&quot;this is sms sender!&quot;);  
+    }  
+} 
+
+public interface Provider {  
+    public Sender produce();  
+}  
+
+public class SendMailFactory implements Provider {  
+
+    @Override  
+    public Sender produce(){  
+        return new MailSender();  
+    }  
+} 
+
+public class SendSmsFactory implements Provider{  
+
+    @Override  
+    public Sender produce() {  
+        return new SmsSender();  
+    }  
+} 
+
+public class FactoryDemo {  
+
+    public static void main(String[] args) {  
+        Provider provider = new SendMailFactory();  
+        Sender sender = provider.produce();  
+        sender.Send();  
+    }  
+}  
+</code></pre><p>　　其实这个模式的好处就是，如果你现在想增加一个功能：发及时信息，则只需做一个实现类，实现Sender接口，同时做一个工厂类，实现Provider接口，就OK了，无需去改动现成的代码。这样做，拓展性较好！</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[设计模式-工厂方法模式（Factory Method）]]></title>
+      <url>http://474903784.github.io/2016/10/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%EF%BC%88Factory%20Method%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p>　　工厂模式适合：凡是出现了大量的产品需要创建，并且具有共同的接口时，可以通过工厂方法模式进行创建。</p>
+<a id="more"></a>
+<h3 id="一、普通工厂模式，就是建立一个工厂类，对实现了同一接口的一些类进行实例的创建。首先看下关系图："><a href="#一、普通工厂模式，就是建立一个工厂类，对实现了同一接口的一些类进行实例的创建。首先看下关系图：" class="headerlink" title="一、普通工厂模式，就是建立一个工厂类，对实现了同一接口的一些类进行实例的创建。首先看下关系图："></a>一、普通工厂模式，就是建立一个工厂类，对实现了同一接口的一些类进行实例的创建。首先看下关系图：</h3><p><img src="/images/设计模式-工厂方法模式（Factory Method）/普通工厂模式.png" alt="关系图"></p>
+<p>举例如下：（我们举一个发送邮件和短信的例子）</p>
+<pre><code>interface Sender {  
+    public void send();  
+}   
+
+class MailSender implements Sender {  
+    @Override  
+    public void send() {  
+        System.out.println(&quot;this is mailsender!&quot;);  
+    }  
+}
+
+class SmsSender implements Sender {  
+
+    @Override  
+    public void send() {  
+        System.out.println(&quot;this is sms sender!&quot;);  
+    }  
+} 
+
+class SendFactory {  
+
+    public static Sender produce(String type) {  
+        if (&quot;mail&quot;.equals(type)) {  
+            return new MailSender();  
+        } else if (&quot;sms&quot;.equals(type)) {  
+            return new SmsSender();  
+        } else {  
+            System.out.println(&quot;请输入正确的类型!&quot;);  
+            return null;  
+        }  
+    }  
+} 
+
+public class FactoryDemo {   
+
+    public static void main(String[] args) {   
+        Sender a = null; // 定义接口对象  
+        a = SendFactory.produce(&quot;mail&quot;); // 通过工厂获取实例  
+        if (a != null) { // 判断对象是否为空  
+            a.send(); // 调用方法   
+        }   
+    }   
+}  
+</code></pre><h3 id="二、多个工厂方法模式，是对普通工厂方法模式的改进，在普通工厂方法模式中，如果传递的字符串出错，则不能正确创建对象，而多个工厂方法模式是提供多个工厂方法，分别创建对象。关系图："><a href="#二、多个工厂方法模式，是对普通工厂方法模式的改进，在普通工厂方法模式中，如果传递的字符串出错，则不能正确创建对象，而多个工厂方法模式是提供多个工厂方法，分别创建对象。关系图：" class="headerlink" title="二、多个工厂方法模式，是对普通工厂方法模式的改进，在普通工厂方法模式中，如果传递的字符串出错，则不能正确创建对象，而多个工厂方法模式是提供多个工厂方法，分别创建对象。关系图："></a>二、多个工厂方法模式，是对普通工厂方法模式的改进，在普通工厂方法模式中，如果传递的字符串出错，则不能正确创建对象，而多个工厂方法模式是提供多个工厂方法，分别创建对象。关系图：</h3><p><img src="/images/设计模式-工厂方法模式（Factory Method）/多个工厂方法模式.jpg" alt="多个工厂方法模式"></p>
+<p>将上面的代码做下修改，改动下SendFactory类就行，如下：</p>
+<pre><code>interface Sender {  
+    public void send();  
+}   
+
+class MailSender implements Sender {  
+    @Override  
+    public void send() {  
+        System.out.println(&quot;this is mailsender!&quot;);  
+    }  
+}
+
+class SmsSender implements Sender {  
+
+    @Override  
+    public void send() {  
+        System.out.println(&quot;this is sms sender!&quot;);  
+    }  
+} 
+
+class SendFactory {  
+   public Sender produceMail(){  
+        return new MailSender();  
+    }  
+
+    public Sender produceSms(){  
+        return new SmsSender();  
+    }  
+}
+
+public class FactoryDemo {   
+
+    public static void main(String[] args) {   
+        Sender a = null; // 定义接口对象  
+        a = SendFactory.produceMail(); // 通过工厂获取实例  
+        a = SendFactory.produceSms(); // 通过工厂获取实例
+        if (a != null) { // 判断对象是否为空  
+            a.send(); // 调用方法   
+        }   
+    }   
+}  
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[设计模式-单例模式的八种写法（Singleton）]]></title>
+      <url>http://474903784.github.io/2016/10/14/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%85%AB%E7%A7%8D%E5%86%99%E6%B3%95%EF%BC%88Singleton%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p>　　单例模式是最常用到的设计模式之一，其定义是单例对象的类只能允许一个实例存在。一般介绍单例模式的书籍都会提到 饿汉式 和 懒汉式 这两种实现方式。</p>
+<a id="more"></a>
+<h2 id="使用场合"><a href="#使用场合" class="headerlink" title="使用场合"></a>使用场合</h2><ul>
+<li>需要频繁的进行创建和销毁的对象；</li>
+<li>创建对象时耗时过多或耗费资源过多，但又经常用到的对象；</li>
+<li>工具类对象；</li>
+<li>频繁访问数据库或文件的对象。</li>
+</ul>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>　　系统内存中该类只存在一个对象，节省了系统资源，对于一些需要频繁创建销毁的对象，使用单例模式可以提高系统性能。</p>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>　　当想实例化一个单例类的时候，必须要记住使用相应的获取对象的方法，而不是使用new，可能会给其他开发人员造成困扰，特别是看不到源码的时候。</p>
+<h2 id="基本的实现思路"><a href="#基本的实现思路" class="headerlink" title="基本的实现思路"></a>基本的实现思路</h2><p>　　单例模式要求类能够有返回对象一个引用(永远是同一个)和一个获得该实例的方法（必须是静态方法，通常使用getInstance这个名称）。</p>
+<p>单例的实现主要是通过以下两个步骤：</p>
+<ol>
+<li>将该类的构造方法定义为私有方法，这样其他处的代码就无法通过调用该类的构造方法来实例化该类的对象，只有通过该类提供的静态方法来得到该类的唯一实例；</li>
+</ol>
+<ol>
+<li>在该类内提供一个静态方法，当我们调用这个方法时，如果类持有的引用不为空就返回这个引用，如果类保持的引用为空就创建该类的实例并将实例的引用赋予该类保持的引用。</li>
+</ol>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>　　单例模式在多线程的应用场合下必须小心使用。如果当唯一实例尚未创建时，有两个线程同时调用创建方法，那么它们同时没有检测到唯一实例的存在，从而同时各自创建了一个实例，这样就有两个实例被构造出来，从而违反了单例模式中实例唯一的原则。 解决这个问题的办法是为指示类是否已经实例化的变量提供一个互斥锁(虽然这样会降低效率)。</p>
+<h2 id="单例模式的八种写法"><a href="#单例模式的八种写法" class="headerlink" title="单例模式的八种写法"></a>单例模式的八种写法</h2><h3 id="1、饿汉式（静态常量）-可用"><a href="#1、饿汉式（静态常量）-可用" class="headerlink" title="1、饿汉式（静态常量）[可用]"></a>1、饿汉式（静态常量）[可用]</h3><pre><code>public class Singleton {
+
+    private final static Singleton INSTANCE = new Singleton();
+
+    private Singleton(){}
+
+    public static Singleton getInstance(){
+        return INSTANCE;
+    }
+}
+</code></pre><p>　　优点：这种写法比较简单，就是在类装载的时候就完成实例化。避免了线程同步问题。</p>
+<p>　　缺点：在类装载的时候就完成实例化，没有达到Lazy Loading的效果。如果从始至终从未使用过这个实例，则会造成内存的浪费。</p>
+<h3 id="2、饿汉式（静态代码块）-可用"><a href="#2、饿汉式（静态代码块）-可用" class="headerlink" title="2、饿汉式（静态代码块）[可用]"></a>2、饿汉式（静态代码块）[可用]</h3><pre><code>public class Singleton {
+
+    private static Singleton instance;
+
+    static {
+        instance = new Singleton();
+    }
+
+    private Singleton() {}
+
+    public Singleton getInstance() {
+        return instance;
+    }
+}
+</code></pre><p>　　这种方式和上面的方式其实类似，只不过将类实例化的过程放在了静态代码块中，也是在类装载的时候，就执行静态代码块中的代码，初始化类的实例。优缺点和上面是一样的。</p>
+<h3 id="3、懒汉式-线程不安全-不可用"><a href="#3、懒汉式-线程不安全-不可用" class="headerlink" title="3、懒汉式(线程不安全)[不可用]"></a>3、懒汉式(线程不安全)[不可用]</h3><pre><code>public class Singleton {
+
+    private static Singleton singleton;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if (singleton == null) {
+            singleton = new Singleton();
+        }
+        return singleton;
+    }
+}
+</code></pre><p>3、这种写法起到了Lazy Loading的效果，但是只能在单线程下使用。如果在多线程下，一个线程进入了if (singleton == null)判断语句块，还未来得及往下执行，另一个线程也通过了这个判断语句，这时便会产生多个实例。所以在多线程环境下不可使用这种方式。</p>
+<h3 id="4、懒汉式-线程安全，同步方法-不推荐用"><a href="#4、懒汉式-线程安全，同步方法-不推荐用" class="headerlink" title="4、懒汉式(线程安全，同步方法)[不推荐用]"></a>4、懒汉式(线程安全，同步方法)[不推荐用]</h3><pre><code>public class Singleton {
+
+    private static Singleton singleton;
+
+    private Singleton() {}
+
+    public static synchronized Singleton getInstance() {
+        if (singleton == null) {
+            singleton = new Singleton();
+        }
+        return singleton;
+    }
+}
+</code></pre><p>　　解决上面第三种实现方式的线程不安全问题，做个线程同步就可以了，于是就对getInstance()方法进行了线程同步。</p>
+<p>　　缺点：效率太低了，每个线程在想获得类的实例时候，执行getInstance()方法都要进行同步。而其实这个方法只执行一次实例化代码就够了，后面的想获得该类实例，直接return就行了。方法进行同步效率太低要改进。</p>
+<h3 id="5、懒汉式-线程安全，同步代码块-不可用"><a href="#5、懒汉式-线程安全，同步代码块-不可用" class="headerlink" title="5、懒汉式(线程安全，同步代码块)[不可用]"></a>5、懒汉式(线程安全，同步代码块)[不可用]</h3><pre><code>public class Singleton {
+
+    private static Singleton singleton;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if (singleton == null) {
+            synchronized (Singleton.class) {
+                singleton = new Singleton();
+            }
+        }
+        return singleton;
+    }
+}
+</code></pre><p>　　由于第四种实现方式同步效率太低，所以摒弃同步方法，改为同步产生实例化的的代码块。但是这种同步并不能起到线程同步的作用。跟第3种实现方式遇到的情形一致，假如一个线程进入了if (singleton == null)判断语句块，还未来得及往下执行，另一个线程也通过了这个判断语句，这时便会产生多个实例。</p>
+<h3 id="6、双重检查-推荐用"><a href="#6、双重检查-推荐用" class="headerlink" title="6、双重检查[推荐用]"></a>6、双重检查[推荐用]</h3><pre><code>public class Singleton {
+
+    private static volatile Singleton singleton;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if (singleton == null) {
+            synchronized (Singleton.class) {
+                if (singleton == null) {
+                    singleton = new Singleton();
+                }
+            }
+        }
+        return singleton;
+    }
+}
+</code></pre><p>　　Double-Check概念对于多线程开发者来说不会陌生，如代码中所示，我们进行了两次if (singleton == null)检查，这样就可以保证线程安全了。这样，实例化代码只用执行一次，后面再次访问时，判断if (singleton == null)，直接return实例化对象。</p>
+<p>　　优点：线程安全；延迟加载；效率较高。</p>
+<h3 id="7、静态内部类-推荐用"><a href="#7、静态内部类-推荐用" class="headerlink" title="7、静态内部类[推荐用]"></a>7、静态内部类[推荐用]</h3><pre><code>public class Singleton {
+
+    private Singleton() {}
+
+    private static class SingletonInstance {
+        private static final Singleton INSTANCE = new Singleton();
+    }
+
+    public static Singleton getInstance() {
+        return SingletonInstance.INSTANCE;
+    }
+}
+</code></pre><p>　　这种方式跟饿汉式方式采用的机制类似，但又有不同。两者都是采用了类装载的机制来保证初始化实例时只有一个线程。不同的地方在饿汉式方式是只要Singleton类被装载就会实例化，没有Lazy-Loading的作用，而静态内部类方式在Singleton类被装载时并不会立即实例化，而是在需要实例化时，调用getInstance方法，才会装载SingletonInstance类，从而完成Singleton的实例化。</p>
+<p>　　类的静态属性只会在第一次加载类的时候初始化，所以在这里，JVM帮助我们保证了线程的安全性，在类进行初始化时，别的线程是无法进入的。</p>
+<p>　　优点：避免了线程不安全，延迟加载，效率高。</p>
+<h3 id="8、枚举-推荐用"><a href="#8、枚举-推荐用" class="headerlink" title="8、枚举[推荐用]"></a>8、枚举[推荐用]</h3><pre><code>public enum Singleton {
+    INSTANCE(new Bean);
+
+    private Bean bean;
+
+    private Singeton(Bean bean) {
+        this.bean = bean;
+    }
+
+    public void getBean() {
+        return this.bean;
+    }
+
+    public String toString() {
+        return this.bean;
+    }        
+
+}
+</code></pre><p>　　借助JDK1.5中添加的枚举来实现单例模式。不仅能避免多线程同步问题，而且还能防止反序列化重新创建新的对象。可能是因为枚举在JDK1.5中才添加，所以在实际项目开发中，很少见人这么写过。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java常用设计模式介绍]]></title>
+      <url>http://474903784.github.io/2016/10/13/Java%E5%B8%B8%E7%94%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%BB%8B%E7%BB%8D/</url>
+      <content type="html"><![CDATA[<p>　　设计模式（Design pattern）是一套被反复使用、多数人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了可重用代码、让代码更容易被他人理解、保证代码可靠性。 毫无疑问，设计模式于己于他人于系统都是多赢的，设计模式使代码编制真正工程化，设计模式是软件工程的基石，如同大厦的一块块砖石一样。</p>
+<a id="more"></a>
+<p>一个程序员对设计模式的理解:<br>　　“不懂”为什么要把很简单的东西搞得那么复杂。后来随着软件开发经验的增加才开始明白我所看到的“复杂”恰恰就是设计模式的精髓所在，我所理解的“简单”就是一把钥匙开一把锁的模式，目的仅仅是着眼于解决现在的问题，而设计模式的“复杂”就在于它是要构造一个“万能钥匙”，目的是提出一种对所有锁的开锁方案。在真正理解设计模式之前我一直在编写“简单”的代码.<br>　　这个“简单”不是功能的简单，而是设计的简单。简单的设计意味着缺少灵活性，代码很钢硬，只在这个项目里有用，拿到其它的项目中就是垃圾，我将其称之为“一次性代码”。</p>
+<p>　　要使代码可被反复使用,请用’设计模式’对你的代码进行设计.</p>
+<p>　　很多我所认识的程序员在接触到设计模式之后，都有一种相见恨晚的感觉，有人形容学习了设计模式之后感觉自己好像已经脱胎换骨，达到了新的境界，还有人甚至把是否了解设计模式作为程序员划分水平的标准。</p>
+<p>　　我们也不能陷入模式的陷阱，为了使用模式而去套模式，那样会陷入形式主义。我们在使用模式的时候，一定要注意模式的意图（intent），而不 要过多的去关注模式的实现细节，因为这些实现细节在特定情况下，可能会发生一些改变。不要顽固地认为设计模式一书中的类图或实现代码就代表了模式本身。</p>
+<p>设计原则：(重要)<br>1.　逻辑代码独立到单独的方法中，注重封装性–易读，易复用。<br>不要在一个方法中，写下上百行的逻辑代码。把各小逻辑代码独立出来，写于其它方法中，易读其可重复调用。<br>2.　写类，写方法，写功能时，应考虑其移植性，复用性：防止一次性代码！<br>是否可以拿到其它同类事物中应该？是否可以拿到其它系统中应该？<br>3.　熟练运用继承的思想：<br>找出应用中相同之处，且不容易发生变化的东西，把它们抽取到抽象类中，让子类去继承它们；<br>继承的思想，也方便将自己的逻辑建立于别人的成果之上。如ImageField extends JTextField；<br>熟练运用接口的思想：<br>找出应用中可能需要变化之处，把它们独立出来，不要和那些不需要变化的代码混在一起。 </p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[理解和正确使用Java中的断言(assert)]]></title>
+      <url>http://474903784.github.io/2016/10/08/%E7%90%86%E8%A7%A3%E5%92%8C%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8Java%E4%B8%AD%E7%9A%84%E6%96%AD%E8%A8%80(assert)/</url>
+      <content type="html"><![CDATA[<p>　　断言(assert)作为一种软件调试的方法，提供了一种在代码中进行正确性检查的机制，目前很多开发语言都支持这种机制。</p>
+<a id="more"></a>
+<p>　　断言是为了方便调试程序，并不是发布程序的组成部分。理解这一点是很关键的。<br>默认情况下，JVM是关闭断言的。因此如果想使用断言调试程序，需要手动打开断言功能。在命令行模式下运行Java程序时可增加参数-enableassertions或者-ea打开断言。可通过-disableassertions或者-da关闭断言(默认情况,可有可无)。</p>
+<blockquote>
+<ol>
+<li>Run -&gt; Run Configurations -&gt; Arguments页签 -&gt; VM arguments文本框中加上断言开启的标志:-enableassertions 或者-ea 就可以了</li>
+<li>在myEclipse中,Windows -&gt; Preferences -&gt;Java -&gt;Installed JREs -&gt;点击正使用的JDK -&gt;Edit -&gt;Default VM Arguments文本框中输入:-ea</li>
+</ol>
+</blockquote>
+<p>　　断言的使用：<br>断言是通过关键字assert来定义的，一般的，它有两种形式。</p>
+<pre><code>1. assert &lt;bool expression&gt;;       比如     boolean isStudent = false; assert isStudent;
+2. assert &lt;bool expression&gt; : &lt;message&gt;;    比如  boolean isSafe = false;  assert isSafe : &quot;Not Safe at all&quot;;
+</code></pre><p>第一种形式：</p>
+<pre><code>public class AssertionTest {  
+
+    public static void main(String[] args) {  
+
+        boolean isSafe = false;  
+        assert isSafe;  
+        System.out.println(&quot;断言通过!&quot;);  
+    }  
+}  
+</code></pre><p>输出结果：</p>
+<blockquote>
+<p>Exception in thread “main” java.lang.AssertionError<br>    at AssertionTest.main(AssertionTest.java:8)  </p>
+</blockquote>
+<p>第二种形式：</p>
+<pre><code>public class AssertionTest {  
+
+    public static void main(String[] args) {  
+
+        boolean isSafe = false;  
+        assert isSafe : &quot;Not safe at all&quot;;  
+        System.out.println(&quot;断言通过!&quot;);  
+    }  
+}  
+</code></pre><p>输出结果：</p>
+<blockquote>
+<p>Exception in thread “main” java.lang.AssertionError: Not safe at all<br>    at AssertionTest.main(AssertionTest.java:7)  </p>
+</blockquote>
+<p>第二种形式和第一种的区别在于后者可以指定错误信息。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java读写Excel文件之jxl技术]]></title>
+      <url>http://474903784.github.io/2016/09/08/Java%E8%AF%BB%E5%86%99Excel%E6%96%87%E4%BB%B6%E4%B9%8Bjxl%E6%8A%80%E6%9C%AF/</url>
+      <content type="html"><![CDATA[<p>　　助于jxl.jar，由于不支持上传文件，所以请自行百度下载jxl.jar，在应用程序中添加jxl.jar包，并将需要读取的excel文件放入根目录即可。</p>
+<a id="more"></a>
+<p>本例使用java来读写excel的内容，代码如下：</p>
+<pre><code>import java.io.File;
+
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+
+public class JxlExpExcel {
+
+    private static final File file = new File(&quot;jxl_test.xls&quot;);
+
+    /**
+     * 导出Excel
+     */
+    private static void exportExcel() {
+        String[] title = {&quot;id&quot;,&quot;name&quot;,&quot;sex&quot;};
+        //创建Excel文件
+
+        try {
+            if(!file.exists())
+                file.createNewFile();
+            //创建工作簿
+            WritableWorkbook workbook = Workbook.createWorkbook(file);
+            //创建sheet
+            WritableSheet sheet = workbook.createSheet(&quot;信息表&quot;, 0);
+            workbook.createSheet(&quot;信息表2&quot;, 1);
+            Label label  = null;
+            //第一行设置列名
+            for(int i = 0;i &lt; title.length; i++) {
+                label = new Label(i, 0, title[i]);
+                sheet.addCell(label);
+            }
+            //追加数据
+            //第一个参数是列，从0开始；第二个参数是行，去除标题后从1开始；第三个参数是内容；
+            for(int i = 1; i &lt; 10; i++) {
+                label = new Label(0,i,&quot;a&quot; + i);
+                sheet.addCell(label);
+                label = new Label(1,i,&quot;user&quot; + i);
+                sheet.addCell(label);
+                label = new Label(2,i,&quot;男&quot;);
+                sheet.addCell(label);
+            }
+            //写入数据
+            workbook.write();
+            workbook.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 导入Excel
+     */
+    public static void importExcel() {
+        Workbook workbook = null;
+        try {
+            workbook = Workbook.getWorkbook(file);
+            Sheet sheet = workbook.getSheet(&quot;信息表&quot;);    //或者sheet.getSheet(0)
+            //总列数
+            int cols = sheet.getColumns();
+            //总行数
+            int rows = sheet.getRows();
+            //列从0开始，行去除标题后从1开始
+            for(int row = 1; row &lt; rows; ++row) {
+                int col = 0;
+                String id = sheet.getCell(col++, row).getContents();
+                String name = sheet.getCell(col++, row).getContents();
+                String sex = sheet.getCell(col++, row).getContents();
+                System.out.println(&quot;id：&quot; + id + &quot;  name：&quot; + name + &quot;  sex：&quot; + sex);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //关闭workbook
+            workbook.close();
+        }
+
+    }
+
+    public static void main(String[] args) {
+        //导出
+        exportExcel();
+        //导入
+        importExcel();
+    }
+
+}
+</code></pre><p>展示打印结果：</p>
+<blockquote>
+<p>id：a1  name：user1  sex：男<br>id：a2  name：user2  sex：男<br>id：a3  name：user3  sex：男<br>id：a4  name：user4  sex：男<br>id：a5  name：user5  sex：男<br>id：a6  name：user6  sex：男<br>id：a7  name：user7  sex：男<br>id：a8  name：user8  sex：男<br>id：a9  name：user9  sex：男</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java读写Excel文件之poi技术]]></title>
+      <url>http://474903784.github.io/2016/09/08/Java%E8%AF%BB%E5%86%99Excel%E6%96%87%E4%BB%B6%E4%B9%8Bpoi%E6%8A%80%E6%9C%AF/</url>
+      <content type="html"><![CDATA[<p>　　助于apathe的poi.jar，由于不支持上传文件，所以请自行百度下载poi.jar，在应用程序中添加poi.jar包，并将需要读取的excel文件放入根目录即可。</p>
+<a id="more"></a>
+<p>本例使用java来读写excel的内容，代码如下：</p>
+<pre><code>import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
+
+public class PoiExpExcel {
+
+    private static final File file = new File(&quot;poi_test.xls&quot;);
+
+    /**
+     * 导出Excel
+     */
+    private static void exportExcel() {
+        String[] title = {&quot;id&quot;,&quot;name&quot;,&quot;sex&quot;};
+
+        //创建Excel工作簿
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        //创建一个工作表sheet
+        Sheet sheet = workbook.createSheet(&quot;信息表&quot;);
+        //创建第一行
+        Row row = sheet.createRow(0);
+        Cell cell = null;
+        //插入第一行数据 id,name,sex
+        for(int i = 0; i &lt; title.length; i++) {
+            cell = row.createCell(i);
+            cell.setCellValue(title[i]);
+        }
+
+        //追加数据
+        //行从0开始，去除第一行标题，这里从第2行开始追加
+        for(int i = 1; i &lt; 10; i++) {
+            Row nextrow = sheet.createRow(i);
+            //列从0开始
+            //第1列
+            cell = nextrow.createCell(0);
+            cell.setCellValue(&quot;a&quot; + i);
+            //第2列
+            cell = nextrow.createCell(1);
+            cell.setCellValue(&quot;user&quot; + i);
+            //第3列
+            cell = nextrow.createCell(2);
+            cell.setCellValue(&quot;男&quot;);
+        }
+
+        try {
+            if(!file.exists())
+                file.createNewFile();
+            //将Excel内容存储
+            FileOutputStream stream = new FileOutputStream(file);
+            workbook.write(stream);
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 导入Excel
+     */
+    public static void importExcel() {
+        POIFSFileSystem fs;
+        try {
+            fs = new POIFSFileSystem(new BufferedInputStream(new FileInputStream(file)));
+            HSSFWorkbook workbook = new HSSFWorkbook(fs);
+            for(int sheetIndex = 0; sheetIndex &lt; workbook.getNumberOfSheets(); ++sheetIndex) {
+                HSSFSheet sheet = workbook.getSheetAt(sheetIndex);    //形同workbook.getSheet(&quot;信息表&quot;);
+                //第一行为标题，不取，故从1开始
+                for(int rowIndex = 1; rowIndex &lt;= sheet.getLastRowNum(); ++rowIndex) {
+                    //第一列开始去，从0开始
+                    int columnIndex = 0;
+                    HSSFRow row = sheet.getRow(rowIndex);
+                    HSSFCell cell = row.getCell(columnIndex++);
+                    String id = cell.getStringCellValue();
+                    cell = row.getCell(columnIndex++);
+                    String name = cell.getStringCellValue();
+                    cell = row.getCell(columnIndex++);
+                    String sex = cell.getStringCellValue();
+                    System.out.println(&quot;id：&quot; + id + &quot;  name：&quot; + name + &quot;  sex：&quot; + sex);
+                }
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public static void main(String[] args) {
+        //导出Excel
+        exportExcel();
+        //导入Excel
+        importExcel();
+    }
+
+}
+</code></pre><p>展示打印结果：</p>
+<blockquote>
+<p>id：a1  name：user1  sex：男<br>id：a2  name：user2  sex：男<br>id：a3  name：user3  sex：男<br>id：a4  name：user4  sex：男<br>id：a5  name：user5  sex：男<br>id：a6  name：user6  sex：男<br>id：a7  name：user7  sex：男<br>id：a8  name：user8  sex：男<br>id：a9  name：user9  sex：男</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Nginx系列-使用Nginx中遇过的坑]]></title>
+      <url>http://474903784.github.io/2016/09/01/Nginx%E7%B3%BB%E5%88%97-%E4%BD%BF%E7%94%A8Nginx%E4%B8%AD%E9%81%87%E8%BF%87%E7%9A%84%E5%9D%91/</url>
+      <content type="html"><![CDATA[<p>　　最近在使用Nginx反向代理后，测试一些部署的项目时发现，一些重定向后出现502页面，再看url发现host发生了改变。发生改变host的原因在于Nginx中的upstream变量名。所以把遇过的坑记录下来，方便供大家参考和避免掉入同样的坑。</p>
+<a id="more"></a>
+<p>　　我相信大部分网站都是用了拦截器或者过滤器，当要访问的页面要使用到个人信息的时候，都会使用拦截器拦截请求的url，待登陆成功后重定向到拦截的url中。如果要使用完整url重定向跳转，在拦截器使用<code>request.getRequestURL()</code>来获取要请求的url时，发生重定向后就出现502页面，url中的host变成了nginx配置中upstream的变量名。先来看下java拦截器主要代码和nginx主要配置。</p>
+<p>Java拦截器主要代码：</p>
+<pre><code>public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+    HttpServletRequest request = (HttpServletRequest)req;
+    HttpServletResponse response = (HttpServletResponse)resp;
+    HttpSession session = request.getSession();
+    if(session.getAttribute(&quot;manager&quot;) == null){
+        String url = request.getRequestURL().toString();
+        //资源文件
+        if(url.startWith(&quot;login.html&quot;))
+            chain.doFilter(request, resp);
+        //没有登录，进行拦截
+        else
+            response.sendRedirect(request.getContextPath() + &quot;/login.html?returnURL=&quot; + url);
+    }
+    else
+      chain.doFilter(req, resp);
+}
+</code></pre><p>Nginx配置：</p>
+<pre><code>upstream servers{
+    server moto.bnuz163.com:8081 max_fails=1 fail_timeout=1s;
+}
+
+server {
+    listen             80;
+    server_name        moto.bnuz163.com;
+    location / {
+        proxy_pass servers;
+        proxy_connect_timeout 2s;
+    }
+
+}
+</code></pre><p>　　当未登录访问时，拦截的请求url的host变为servers，重定向后完整url为：</p>
+<blockquote>
+<p><a href="http://moto.bnuz163.com/manager/login.html?returnURL=http://servers/manager/" target="_blank" rel="external">http://moto.bnuz163.com/manager/login.html?returnURL=http://servers/manager/</a></p>
+</blockquote>
+<p>　　登录成功后，跳转到为<code>http://servers/manager/</code>的502页面，而这个host为<code>servers</code>恰好是nginx配置中upstream的变量名，很明显这不是我们想要的，我们要的是<code>http://moto.bnuz163.com/manager/</code>。<br>　　所以我们接下来把nginx配置中upstream的变量名改为访问的域名<code>moto.bnuz163.com</code>，修改后的配置：</p>
+<pre><code>upstream  moto.bnuz163.com{
+    server moto.bnuz163.com:8081 max_fails=1 fail_timeout=1s;
+}
+
+server {
+    listen             80;
+    server_name        moto.bnuz163.com;
+    location / {
+        proxy_pass  moto.bnuz163.com;
+        proxy_connect_timeout 2s;
+    }
+
+}
+</code></pre><p>　　这时再访问，我们从重定向后完整url中看到了拦截请求url的host变成<code>moto.bnuz163.com</code>了。</p>
+<blockquote>
+<p><a href="http://moto.bnuz163.com/manager/login.html?returnURL=http://moto.bnuz163.com/manager/" target="_blank" rel="external">http://moto.bnuz163.com/manager/login.html?returnURL=http://moto.bnuz163.com/manager/</a></p>
+</blockquote>
+<p><br></p>
+<p>　　小编自从掉入这个坑重新爬出来后，已经把所有项目的upstream变量名改为要访问的域名为变量了。希望对大家有帮助，避免入坑。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[在Linux中安装Redis-3.2.3]]></title>
+      <url>http://474903784.github.io/2016/08/25/%E5%9C%A8Linux%E4%B8%AD%E5%AE%89%E8%A3%85Redis-3.2.3/</url>
+      <content type="html"><![CDATA[<p>　　Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。项目需要用来存储经常变化的持久化数据和共享集群服务器中的web session。现在在CentOS 7.2中安装Redis-3.2.3。</p>
+<a id="more"></a>
+<h2 id="下载-amp-解压"><a href="#下载-amp-解压" class="headerlink" title="下载&amp;解压"></a>下载&amp;解压</h2><p>查看最新版下载地址：<a href="http://download.redis.io/releases/" target="_blank" rel="external">http://download.redis.io/releases/</a></p>
+<pre><code># cd /usr/local
+# wget http://download.redis.io/releases/redis-3.2.3.tar.gz
+# tar zxvf redis-3.2.3.tar.gz  
+</code></pre><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><pre><code># cd /usr/local/redis-3.2.3
+# make
+</code></pre><p>make之后，我们会得到src目录下的可执行文件：<br>　　redis-server：Redis服务器的daemon启动程序<br>　　redis-cli：Redis命令行操作工具。或者通过telnet进行纯文本协议操作<br>　　redis-benchmark：Redis性能测试工具，测试Redis在你的系统及你的配置下的读写性能<br>　<br>make完成之后，有个提示可以make test检测是否安装正确，可以执行以下： </p>
+<pre><code># make test
+</code></pre><p>若出现检测不提示如下<br><img src="http://i.imgur.com/IbnVqHs.jpg" alt="make error"><br>就需要安装tcl，安装方法：</p>
+<pre><code>wget http://downloads.sourceforge.net/tcl/tcl8.6.0-src.tar.gz
+tar xzvf tcl8.6.1-src.tar.gz 
+cd tcl8.6.0/
+
+cd unix &amp;&amp;
+./configure --prefix=/usr \
+            --mandir=/usr/share/man \
+            --without-tzdata \
+            $([ $(uname -m) = x86_64 ] &amp;&amp; echo --enable-64bit) &amp;&amp;
+make &amp;&amp;
+
+sed -e &quot;s@^\(TCL_SRC_DIR=&apos;\).*@\1/usr/include&apos;@&quot; \
+    -e &quot;/TCL_B/s@=&apos;\(-L\)\?.*unix@=&apos;\1/usr/lib@&quot; \
+    -i tclConfig.sh
+
+make install &amp;&amp;
+make install-private-headers &amp;&amp;
+ln -v -sf tclsh8.6 /usr/bin/tclsh &amp;&amp;
+chmod -v 755 /usr/lib/libtcl8.6.so
+</code></pre><p>还有种另外方法，参考链接：<a href="http://blog.csdn.net/luyee2010/article/details/18766911" target="_blank" rel="external">http://blog.csdn.net/luyee2010/article/details/18766911</a><br>　<br>make test检测正确后再执行make install，貌似我需要的可执行文件，安装到了/usr/local/bin：</p>
+<pre><code># cd /usr/local/redis-3.2.3
+# make install
+</code></pre><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>1、复制配置文件，因为一台服务器可能需要启动多个redis，所以把配置文件复制到conf目录下，按照端口命名配置文件，启动多个只要修改不同端口号。</p>
+<pre><code># cd /usr/local/redis-3.2.3
+# mkdir ./conf
+# cp redis.conf ./conf/redis-6379.conf
+</code></pre><p>2、修改Redis配置。</p>
+<pre><code># vi conf/redis-6379.conf 
+</code></pre><p>常用配置：</p>
+<ol>
+<li>daemonize：是否是守护进程（no|yes），改为yes</li>
+<li>port：Redis对外端口号，默认6379，需要启动多个redis，只需要修改成不同端口。</li>
+<li>logfile：Redis系统日志，查看控制台打印的日志。</li>
+<li>requirepass：Redis连接密码，如修改成requirepass 123456。</li>
+<li>maxmemory：可以分配的最大内存，配置大小要小于物理内存，留有足够的内存供系统使用，防止数据暴涨，导致内存吃紧，SWAP加剧，直接宕机。如改成maxmemory 512mb。</li>
+<li>save 60 1000 #当时间间隔超过60秒，或存储超过1000条记录时，进行持久化。</li>
+</ol>
+<p>更多配置：</p>
+<ul>
+<li>daemonize：是否以后台daemon（守护进程）方式运行</li>
+<li>pidfile：pid文件位置</li>
+<li>port：监听的端口号</li>
+<li>timeout：请求超时时间</li>
+<li>loglevel：log信息级别</li>
+<li>logfile：log文件位置</li>
+<li>databases：开启数据库的数量</li>
+<li>save <em> </em>：保存快照的频率，第一个<em>表示多长时间（秒级），第三个</em>表示执行多少次写操作。在一定时间内执行一定数量的写操作时，自动保存快照。可设置多个条件。</li>
+<li>rdbcompression：是否使用压缩</li>
+<li>dbfilename：数据快照文件名（只是文件名，不包括目录）</li>
+<li>dir：数据快照的保存目录（这个是目录）</li>
+<li>appendonly：是否开启appendonlylog，开启的话每次写操作会记一条log，这会提高数据抗风险能力，但影响效率。</li>
+<li>appendfsync：appendonlylog如何同步到磁盘（三个选项，分别是每次写都强制调用fsync、每秒启用一次fsync、不调用fsync等待系统自己同步）</li>
+<li>slaveof <masterip> <masterport> ：主从配置，在redis-slave上配置master的ip port，即可。</masterport></masterip></li>
+</ul>
+<p>3、查看Redis配置，去除了注释行和空行。</p>
+<pre><code># cat conf/redis-6379.conf | grep -v ‘#’ | grep -v ‘^$’
+</code></pre><h2 id="调优"><a href="#调优" class="headerlink" title="调优"></a>调优</h2><p>1、/etc/sysctl.conf<br>前面启动Redis时，看到如下警告：</p>
+<blockquote>
+<p>[1958] 13 Aug 16:18:24 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add ‘vm.overcommit_memory = 1’ to /etc/sysctl.conf and then reboot or run the command ‘sysctl vm.overcommit_memory=1’ for this to take effect.</p>
+</blockquote>
+<p>需要修改/etc/sysctl.conf文件：</p>
+<pre><code># vim /etc/sysctl.conf  
+</code></pre><p>打开后再末尾追加：</p>
+<blockquote>
+<p>vm.overcommit_memory = 1  </p>
+</blockquote>
+<p>然后执行sysctl vm.overcommit_ry=1，使之生效：  </p>
+<pre><code># sysctl vm.overcommit_memory=1  
+</code></pre><p>2、/proc/sys/vm/overcommit_memory<br>为了调整内存分配策略，需要配置/proc/sys/vm/overcommit_memory</p>
+<ul>
+<li>0， 表示内核将检查是否有足够的可用内存供应用进程使用；如果有足够的可用内存，内存申请允许；否则，内存申请失败，并把错误返回给应用进程。</li>
+<li>1， 表示内核允许分配所有的物理内存，而不管当前的内存状态如何。</li>
+<li>2， 表示内核允许分配超过所有物理内存和交换空间总和的内存</li>
+</ul>
+<p>默认为0，如果内存情况比较紧张的话，设为1：</p>
+<pre><code># echo 1 &gt; /proc/sys/vm/overcommit_memory  
+</code></pre><h2 id="运行-amp-关闭"><a href="#运行-amp-关闭" class="headerlink" title="运行&amp;关闭"></a>运行&amp;关闭</h2><p>1、运行Redis</p>
+<pre><code># redis-server /usr/local/redis-3.2.3/conf/redis-6379.conf 
+</code></pre><p>2、关闭Redis<br>　　四种关闭操作，其中shutdown默认持久化后退出，shutdown save为显式持久化后退出，shutdown nosave为不持久化退出：</p>
+<pre><code># redis-cli shutdown  //默认关闭host：127.0.0.1 端口：6379的Redis
+# redis-cli -h 127.0.0.1 shutdown //关闭host：127.0.0.1 默认端口：6379的Redis
+# redis-cli -p 6378 shutdown  //关闭默认host：127.0.0.1 端口：6378的Redis
+# redis-cli -h 127.0.0.1 -p 6377 shutdown //关闭host：127.0。0.1，端口：6377 的Redis
+</code></pre><h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>1、通过客户端命令redis-cli访问Redis：</p>
+<pre><code># redis-cli  
+# redis&gt; set name jstar
+OK  
+# redis&gt; get name   
+&quot;jstar&quot; 
+</code></pre><p>2、进行Redis性能测试：</p>
+<pre><code># redis-benchmark -l  
+</code></pre><p>这个测试会一直进行下去，直到你按Ctrl+C。</p>
+<h2 id="redis-cli常用命令"><a href="#redis-cli常用命令" class="headerlink" title="redis-cli常用命令"></a>redis-cli常用命令</h2><p>1、客户端命令redis-cli访问Redis</p>
+<pre><code># redis-cli -h 127.0.0.1 -p 6379
+</code></pre><p><img src="http://i.imgur.com/SExzuL4.jpg" alt="redis-cli"></p>
+<p>2、添加key为a，value为b的字符串</p>
+<pre><code>redis&gt; set a b 
+</code></pre><p><img src="http://i.imgur.com/F5bPn0C.jpg" alt="redis-cli set"></p>
+<p>3、获取key为a的字符串value</p>
+<pre><code>redis&gt; get a
+</code></pre><p><img src="http://i.imgur.com/isygjzs.jpg" alt="get a"></p>
+<p>4、整数k自增1</p>
+<pre><code>redis&gt; incr k
+</code></pre><p><img src="http://i.imgur.com/ZIK16s6.jpg" alt="redis-cli incr"></p>
+<p>5、同时获取多个key的value</p>
+<pre><code>redis&gt; mget a i k 
+</code></pre><p><img src="http://i.imgur.com/fGT1SST.jpg" alt="redis-cli mget"></p>
+<p>6、查看redis保存着多少个键值对</p>
+<pre><code>redis-cli dbsize
+</code></pre><p><img src="http://i.imgur.com/2Eq6AXD.jpg" alt="redis-cli dbsize"></p>
+<p>7、清空所有Redis保存的键值对</p>
+<pre><code>redis&gt; flushall
+</code></pre><p><img src="http://i.imgur.com/lCNysyW.jpg" alt="redis-cli flushall"></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[在Linux中安装Nginx-1.10.1]]></title>
+      <url>http://474903784.github.io/2016/08/24/%E5%9C%A8Linux%E4%B8%AD%E5%AE%89%E8%A3%85Nginx-1.10.1/</url>
+      <content type="html"><![CDATA[<p>　　Nginx (“engine x”) 是一个高性能的 HTTP 和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。现在项目需要搭载集群服务器，故采用Nginx反向代理负载均衡来实现。安装环境CentOS 7.2，安装Nginx版本1.10.1。</p>
+<a id="more"></a>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>1、安装必备工具：</p>
+<pre><code>$ yum -y install gcc gcc-c++ autoconf automake
+$ yum -y install zlib zlib-devel openssl openssl-devel pcre-devel
+</code></pre><p>说明：<br>pcre: 用来作地址重写的功能。<br>zlib：nginx 的gzip模块,传输数据打包，省流量（但消耗资源）。<br>openssl：提供ssl加密协议。</p>
+<p>2、新建一个系统级用户组和匿名用户，以及下面编译时使用。</p>
+<pre><code>$ sudo groupadd -r nginx
+$ sudo useradd -s /sbin/nologin -g nginx -r nginx-user
+</code></pre><h2 id="下载-amp-解压-amp-编译安装"><a href="#下载-amp-解压-amp-编译安装" class="headerlink" title="下载&amp;解压&amp;编译安装"></a>下载&amp;解压&amp;编译安装</h2><p>1、下载Nginx，下载最新版本查看链接：<a href="http://nginx.org/en/download.html" target="_blank" rel="external">http://nginx.org/en/download.html</a></p>
+<pre><code>$ cd /usr/local
+$ wget -c http://nginx.org/download/nginx-1.10.1.tar.gz
+</code></pre><p>2、解压</p>
+<pre><code>$ tar -zxvf nginx-1.9.2.tar.gz
+</code></pre><p>3、编译</p>
+<pre><code>$ cd nginx-1.9.2/
+
+$ ./configure \
+--prefix=/etc/nginx \
+--sbin-path=/usr/sbin/nginx \
+--conf-path=/etc/nginx/nginx.conf \
+--error-log-path=/var/log/nginx/error.log \
+--http-log-path=/var/log/nginx/access.log \
+--pid-path=/var/run/nginx.pid \
+--lock-path=/var/run/nginx.lock \
+--http-client-body-temp-path=/var/cache/nginx/client_temp \
+--http-proxy-temp-path=/var/cache/nginx/proxy_temp \
+--http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
+--http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
+--http-scgi-temp-path=/var/cache/nginx/scgi_temp \
+--user=nginx \--group=nginx \
+--with-http_ssl_module \
+--with-http_realip_module \
+--with-http_addition_module \
+--with-http_sub_module \
+--with-http_dav_module \
+--with-http_flv_module \
+--with-http_mp4_module \
+--with-http_gunzip_module \
+--with-http_gzip_static_module \
+--with-http_random_index_module \
+--with-http_secure_link_module \
+--with-http_stub_status_module \
+--with-http_auth_request_module \
+--with-mail \
+--with-mail_ssl_module \
+--with-file-aio \
+--with-ipv6 \
+--with-http_spdy_module \
+--with-cc-opt=&apos;-O2 -g -pipe -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic&apos;
+</code></pre><p>其中 <code>--with-http_spdy_module \</code>在1.10.1版本中可能不需要。<br>上面的参数的作用可以通过<code>--help</code>来查看。</p>
+<pre><code>$ ./configure --help
+</code></pre><p>编译日志：</p>
+<blockquote>
+<p>checking for OS</p>
+<ul>
+<li>Linux 3.10.0-229.4.2.el7.x86_64 x86_64<br>checking for C compiler … found</li>
+<li>using GNU C compiler</li>
+<li>gcc version: 4.8.3 20140911 (Red Hat 4.8.3-9) (GCC)<br>checking for gcc -pipe switch … found<br>checking for gcc builtin atomic operations … found<br>checking for C99 variadic macros … found<br>checking for gcc variadic macros … found<br>checking for unistd.h … found<br>checking for inttypes.h … found<br>checking for limits.h … found<br>checking for sys/filio.h … not found<br>checking for sys/param.h … found<br>checking for sys/mount.h … found<br>checking for sys/statvfs.h … found<br>checking for crypt.h … found<br>checking for Linux specific features<br>checking for epoll … found<br>checking for EPOLLRDHUP … found<br>checking for O_PATH … found<br>checking for sendfile() … found<br>checking for sendfile64() … found<br>checking for sys/prctl.h … found<br>checking for prctl(PR_SET_DUMPABLE) … found<br>checking for sched_setaffinity() … found<br>checking for crypt_r() … found<br>checking for sys/vfs.h … found<br>checking for poll() … found<br>checking for /dev/poll … not found<br>checking for kqueue … not found<br>checking for crypt() … not found<br>checking for crypt() in libcrypt … found<br>checking for F_READAHEAD … not found<br>checking for posix_fadvise() … found<br>checking for O_DIRECT … found<br>checking for F_NOCACHE … not found<br>checking for directio() … not found<br>checking for statfs() … found<br>checking for statvfs() … found<br>checking for dlopen() … not found<br>checking for dlopen() in libdl … found<br>checking for sched_yield() … found<br>checking for SO_SETFIB … not found<br>checking for SO_REUSEPORT … found<br>checking for SO_ACCEPTFILTER … not found<br>checking for TCP_DEFER_ACCEPT … found<br>checking for TCP_KEEPIDLE … found<br>checking for TCP_FASTOPEN … not found<br>checking for TCP_INFO … found<br>checking for accept4() … found<br>checking for eventfd() … found<br>checking for int size … 4 bytes<br>checking for long size … 8 bytes<br>checking for long long size … 8 bytes<br>checking for void * size … 8 bytes<br>checking for uint64_t … found<br>checking for sig_atomic_t … found<br>checking for sig_atomic_t size … 4 bytes<br>checking for socklen_t … found<br>checking for in_addr_t … found<br>checking for in_port_t … found<br>checking for rlim_t … found<br>checking for uintptr_t … uintptr_t found<br>checking for system byte ordering … little endian<br>checking for size_t size … 8 bytes<br>checking for off_t size … 8 bytes<br>checking for time_t size … 8 bytes<br>checking for setproctitle() … not found<br>checking for pread() … found<br>checking for pwrite() … found<br>checking for sys_nerr … found<br>checking for localtime_r() … found<br>checking for posix_memalign() … found<br>checking for memalign() … found<br>checking for mmap(MAP_ANON|MAP_SHARED) … found<br>checking for mmap(“/dev/zero”, MAP_SHARED) … found<br>checking for System V shared memory … found<br>checking for POSIX semaphores … not found<br>checking for POSIX semaphores in libpthread … found<br>checking for struct msghdr.msg_control … found<br>checking for ioctl(FIONBIO) … found<br>checking for struct tm.tm_gmtoff … found<br>checking for struct dirent.d_namlen … not found<br>checking for struct dirent.d_type … found<br>checking for sysconf(_SC_NPROCESSORS_ONLN) … found<br>checking for openat(), fstatat() … found<br>checking for getaddrinfo() … found<br>checking for PCRE library … found<br>checking for PCRE JIT support … found<br>checking for OpenSSL library … found<br>checking for zlib library … found<br>creating objs/Makefile</li>
+</ul>
+<p>Configuration summary</p>
+<ul>
+<li>using system PCRE library</li>
+<li>using system OpenSSL library</li>
+<li>md5: using OpenSSL library</li>
+<li>sha1: using OpenSSL library</li>
+<li>using system zlib library</li>
+</ul>
+<p>  nginx path prefix: “/usr”<br>  nginx binary file: “/usr/sbin/nginx”<br>  nginx configuration prefix: “/etc/nginx”<br>  nginx configuration file: “/etc/nginx/nginx.conf”<br>  nginx pid file: “/var/run/nginx/nginx.pid”<br>  nginx error log file: “/var/log/nginx/error.log”<br>  nginx http access log file: “/var/log/nginx/http.log”<br>  nginx http client request body temporary files: “/var/tmp/nginx/client”<br>  nginx http proxy temporary files: “/var/tmp/nginx/proxy”<br>  nginx http fastcgi temporary files: “/var/tmp/nginx/fcgi”<br>  nginx http uwsgi temporary files: “uwsgi_temp”<br>  nginx http scgi temporary files: “scgi_temp”</p>
+</blockquote>
+<p>4、安装</p>
+<pre><code>$ make &amp;&amp; make install
+</code></pre><p>5、启动</p>
+<pre><code>$ nginx -c /etc/nginx/nginx.conf
+</code></pre><p>如果提示缺什么包，直接用yum安装</p>
+<pre><code>$ yum install xxxxx
+</code></pre><p>如果提示：</p>
+<blockquote>
+<p>nginx: [emerg] mkdir() “/var/tmp/nginx/client_temp” failed (2: No such file or directory)</p>
+</blockquote>
+<p>则用管理员去mkdir 创建文件夹后再启动。</p>
+<pre><code>$ mkdir -p /var/tmp/nginx/client_temp
+</code></pre><h2 id="相关指令"><a href="#相关指令" class="headerlink" title="相关指令"></a>相关指令</h2><p>1、查看Nginx的安装目录：</p>
+<pre><code>$ whereis nginx
+</code></pre><p>2、检查配置文件是否正确：</p>
+<pre><code>$ cd /etc/nginx
+$ nginx -t
+</code></pre><p>3、启动：</p>
+<pre><code>$ nginx -c /etc/nginx/nginx.conf
+</code></pre><p>4、重启：</p>
+<pre><code>$ cd /etc/nginx
+$ nginx -s reload
+</code></pre><p>5、停止服务器：</p>
+<pre><code>$ ps -ef | grep nginx
+$kill -9 [pid] [pid2]
+</code></pre><p><img src="http://i.imgur.com/sOQR5tu.jpg" alt="停止服务器"></p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p>如果安装Nginx前的准备工作没有新建系统级用户组和匿名用户，启动Nginx时会出现如下情况：</p>
+<blockquote>
+<p>nginx: [emerg] getpwnam(“nginx”) failed</p>
+</blockquote>
+<p>解决方法：</p>
+<pre><code>$useradd -r -M nginx
+</code></pre><p>解决方法其他参考链接：</p>
+<ul>
+<li><a href="https://my.oschina.net/u/1036767/blog/210443" target="_blank" rel="external">https://my.oschina.net/u/1036767/blog/210443</a></li>
+<li><a href="http://blog.csdn.net/joeyon1985/article/details/46422715" target="_blank" rel="external">http://blog.csdn.net/joeyon1985/article/details/46422715</a></li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[在Linux中安装与配置Tomcat-8]]></title>
+      <url>http://474903784.github.io/2016/08/22/%E5%9C%A8Linux%E4%B8%AD%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AETomcat-8/</url>
+      <content type="html"><![CDATA[<p>　　最近因项目需要部署集群服务器，所以开了台CentOS 7.2的服务器，需要重新安装和配置Tomcat，所以把安装和配置步骤记录下来，方便以后参考。此教程安装前提，系统必须安装JDK8。</p>
+<a id="more"></a>
+<h2 id="下载-amp-解压"><a href="#下载-amp-解压" class="headerlink" title="下载&amp;解压"></a>下载&amp;解压</h2><p>先切换到root身份，下载并解压tomcat8，下载链接查看地址：<a href="https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat" target="_blank" rel="external">https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat</a></p>
+<pre><code># cd /usr/local  
+# wget -c http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-8/v8.0.37/bin/apache-tomcat-8.0.37.tar.gz
+# tar -zxv -f apache-tomcat-7.0.29.tar.gz // 解压压缩包  
+# rm -rf apache-tomcat-7.0.29.tar.gz // 删除压缩包  
+# mv apache-tomcat-7.0.29 tomcat  
+</code></pre><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>ps：需要说明的是tomcat的默认测试页面是放在webapps下面，这个其实是在server.xml文件中配置的，如下所示：</p>
+<pre><code>&lt;Host name=&quot;192.168.1.8&quot;  appBase=&quot;webapps&quot;
+    unpackWARs=&quot;true&quot; autoDeploy=&quot;true&quot;&gt;
+&lt;/Host&gt;
+</code></pre><p>1)webapps文件夹主要用于web应用程序部署，比如你可以把你的应用程序包，如war文件拷到该目录下，容器会自动部署。<br>2)conf文件夹下主要是放置tomcat的服务器的相关配置文件</p>
+<pre><code>&lt;Server port=&quot;8005&quot; shutdown=&quot;SHUTDOWN&quot;&gt; //tomcat关闭端口
+&lt;Connector port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot;
+               connectionTimeout=&quot;20000&quot;
+               redirectPort=&quot;8443&quot; /&gt; //tomcat默认的端口8080。现在修改成80
+&lt;Connector port=&quot;8009&quot; protocol=&quot;AJP/1.3&quot; redirectPort=&quot;8443&quot; /&gt;// apache+tomcat模式时访问tomcat的端口
+</code></pre><h2 id="启动、关闭、杀死进程"><a href="#启动、关闭、杀死进程" class="headerlink" title="启动、关闭、杀死进程"></a>启动、关闭、杀死进程</h2><p>启动Tomcat：</p>
+<pre><code># sh /usr/tomcat/bin/startup.sh
+</code></pre><p><img src="http://i.imgur.com/HLLPx5j.jpg" alt="启动tomcat"></p>
+<p>关闭Tomcat：</p>
+<pre><code># sh /usr/tomcat/bin/shutdown.sh
+</code></pre><p><img src="http://i.imgur.com/E1u3UaA.jpg" alt="关闭tomcat"></p>
+<p>杀死Tomcat进程：<br>1)查看Tomcat的pid</p>
+<pre><code># ps -ef | grep tomcat
+</code></pre><p><img src="http://i.imgur.com/oc06iNu.png" alt="查看tomcat的pid"><br>2)使用kill命令杀死Tomcat进程</p>
+<pre><code># kill -9 12561
+</code></pre><p><img src="http://i.imgur.com/0VV7nF8.png" alt="杀死Tomcat进程"><br>3)然后继续查看Tomcat是否关闭，如果出现以下信息，则表示Tomcat已经关闭</p>
+<pre><code># ps -ef | grep tomcat
+</code></pre><p><img src="http://i.imgur.com/PjOjTK8.png" alt="查看tomcat是否关闭"></p>
+<h2 id="查看Tomcat日志和端口"><a href="#查看Tomcat日志和端口" class="headerlink" title="查看Tomcat日志和端口"></a>查看Tomcat日志和端口</h2><p>查看控制台日志:</p>
+<pre><code># tail -f /usr/tomcat/logs/catalina.out  //catalina.out 是控制台日志文件
+</code></pre><p>查看tomcat占用端口:</p>
+<pre><code>//第一种查看方法：
+# ps -ef | grep tomcat
+# netstat -antup | grep 12441
+
+//第二种查看方法：
+#  netstat -antup | grep java
+</code></pre><p><img src="http://i.imgur.com/91O0lYK.png" alt="查看tomcat的端口"></p>
+<h2 id="外网访问Tomcat"><a href="#外网访问Tomcat" class="headerlink" title="外网访问Tomcat"></a>外网访问Tomcat</h2><p>如果外网访问不了Tomcat，需配置防火墙或者关闭防火墙。<br>CentOS 7.0以后防火墙不再采用iptables命令，改用firewalld。<br>禁用防火墙命令：</p>
+<pre><code># systemctl stop firewalld.service  //停止firewall
+# systemctl disable firewalld.service  //禁止firewall开机启动
+# systemctl status firewalld.service  //查看默认防火墙状态（关闭后显示notrunning，开启后显示running）
+</code></pre><blockquote>
+<p>启动一个服务：systemctl start firewalld.service<br>关闭一个服务：systemctl stop firewalld.service<br>重启一个服务：systemctl restart firewalld.service<br>显示一个服务的状态：systemctl status firewalld.service<br>在开机时启用一个服务：systemctl enable firewalld.service<br>在开机时禁用一个服务：systemctl disable firewalld.service<br>查看服务是否开机启动：systemctl is-enabled firewalld.service;echo $?<br>查看已启动的服务列表：systemctl list-unit-files|grep enabled</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[CentOS7.2下解压ZIP文件]]></title>
       <url>http://474903784.github.io/2016/08/21/CentOS7.2%E4%B8%8B%E8%A7%A3%E5%8E%8BZIP%E6%96%87%E4%BB%B6/</url>
       <content type="html"><![CDATA[<p>项目开发环境是自己电脑WINDOWS系统，压缩后是ZIP文件，需要在Linux下解压部署，需要使用到ZIP解压。</p>
@@ -65,7 +1230,7 @@
     
     <entry>
       <title><![CDATA[在Linux下安装JDK8.0]]></title>
-      <url>http://474903784.github.io/2016/08/20/%E5%9C%A8Linux%E4%B8%8B%E5%AE%89%E8%A3%85JDK8.0%20-%20%E5%89%AF%E6%9C%AC/</url>
+      <url>http://474903784.github.io/2016/08/20/%E5%9C%A8Linux%E4%B8%8B%E5%AE%89%E8%A3%85JDK8.0/</url>
       <content type="html"><![CDATA[<p>最近项目需要发布，采用集群服务器，现在要把服务器从Windows中转到Linux下，所以在此把Linux的部分服务器环境配置记录下，方便供以后参考。</p>
 <h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p>系统环境：centos-7.2<br>安装方式：rpm安装<br>软件：jdk-8u101-linux-x64.rpm<br>下载地址：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p>
 <a id="more"></a>
@@ -113,6 +1278,302 @@ export JAVA_HOME JRE_HOME PATH CLASSPATH
 java/lang/NoClassDefFoundError: java/lang/Object
 </code></pre><p>是因为/usr/java/jdk/lib目录下没有tools.jar或/usr/java/jre/lib目录下没有rt.jar。（从/usr/java/jdk1.8.0_101/jre/lib目录下复制rt.jar到/usr/java/jre/lib）</p>
 <p>解决方法：参考<a href="http://babyhe.blog.51cto.com/1104064/1045485/" target="_blank" rel="external">http://babyhe.blog.51cto.com/1104064/1045485/</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Nginx系列-配置多个站点的方法]]></title>
+      <url>http://474903784.github.io/2016/08/15/Nginx%E7%B3%BB%E5%88%97-%E9%85%8D%E7%BD%AE%E5%A4%9A%E4%B8%AA%E7%AB%99%E7%82%B9%E7%9A%84%E6%96%B9%E6%B3%95/</url>
+      <content type="html"><![CDATA[<p>　　当我们有了一个 VPS 主机以后，为了不浪费 VPS 的强大资源（相比共享主机1000多个站点挤在一台机器上），往往有想让 VPS 做点什么的想法，银子不能白花啊:)。放置多个网站或者博客是个不错的想法，可是如何配置 web 服务器才能在一个 VPS 上放置多个网站/博客呢？如何通过一个 IP 访问多个站点/域名呢？这就教大家如何用nginx配置多个站点的方法。</p>
+<a id="more"></a>
+<p>这里以配置2个站点（2个域名）为例，n 个站点可以相应增加调整，假设：</p>
+<p>　　IP地址: 127.0.0.1<br>　　域名1 www.bnuz163.com tomcat端口为80 静态文件放在 /www/bnuz<br>　　域名2 moto.bnuz163.com tomcat端口为8081 静态文件放在 /www/moto</p>
+<p>配置 nginx virtual hosting 的基本思路和步骤如下：
+　　</p>
+<ol>
+<li>把2个站点 www.bnuz163.com, moto.bnuz163.com 放到 nginx 可以访问的目录 /www/</li>
+<li>给每个站点分别创建一个 nginx 配置文件 www.conf，moto.conf, 并把配置文件放到 /nginx/vhosts/</li>
+<li>然后在 /conf/nginx.conf 里面加一句 include 把步骤2创建的配置文件全部包含进来</li>
+<li>重启 nginx</li>
+</ol>
+<h2 id="具体过程"><a href="#具体过程" class="headerlink" title="具体过程"></a>具体过程</h2><p>1、在 /nginx 下创建 <code>vhosts</code> 目录</p>
+<pre><code>mkdir vhosts
+</code></pre><p>2、在 /nginx/vhosts/ 里创建一个名字为 <code>www.conf</code> 的文件，把以下内容拷进去</p>
+<pre><code>#upstream的负载均衡，weight是权重，可以根据机器配置定义权重。weigth参数表示权值，权值越高被分配到的几率越大。
+upstream www.bnuz163.com{
+    server server1.bnuz163.com:8080 max_fails=1 fail_timeout=1s;
+    server server2.bnuz163.com:8080 max_fails=1 fail_timeout=1s;
+}
+
+server {
+    listen       80;
+    server_name  bunz163.com www.bnuz163.com;
+    root   ./html/bnuz/;
+
+    #access_log  logs/host.access.log  main;
+    #重定向
+    if ($host = &apos;bnuz163.com&apos;){
+       rewrite ^/(.*)$ http://www.bnuz163.com/$1 permanent;
+    }
+
+    location ~^/druid/ {
+        proxy_pass http://www.bnuz163.com;
+        proxy_connect_timeout 2s;
+
+    }
+
+    location / {
+        index  index.html;
+        #如果直接域名访问就显示上一句index配置的静态首页
+        if ( !-e $request_filename ) {
+            proxy_pass http://www.bnuz163.com;
+        }
+
+        proxy_connect_timeout 2s;
+        proxy_redirect off; 
+        proxy_set_header Host $host; #这一句至关重要
+        proxy_set_header X-Real-IP $remote_addr; 
+        #后端的Web服务器可以通过X-Forwarded-For获取用户真实IP
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;             
+    }
+
+    location ~* \.(htm|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid|doc|ppt|pdf|xls|mp3|wma|svg|js|css)$ {
+        root   ./www/bnuz/;
+        expires 1h;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   ./html/bnuz/;
+    }
+}
+</code></pre><p>3、在 /nginx/vhosts/ 里创建一个名字为 <code>moto.conf</code> 的文件，把以下内容拷进去</p>
+<pre><code>upstream moto.bnuz163.com{
+    server moto.bnuz163.com:8081 max_fails=1 fail_timeout=1s;
+}
+
+server {
+    listen             80;
+    server_name        moto.bnuz163.com;
+    location / {
+        proxy_pass http://moto.bnuz163.com;
+        proxy_connect_timeout 2s;
+
+        proxy_redirect off; 
+        proxy_set_header Host $host; #这一句至关重要
+        proxy_set_header X-Real-IP $remote_addr; 
+        #后端的Web服务器可以通过X-Forwarded-For获取用户真实IP
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location ~* \.(htm|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid|doc|ppt|pdf|xls|mp3|wma|svg|js|css)$ {
+        root   ./www/moto/;
+        expires 1h;
+    }
+}
+</code></pre><p>4、打开 /nginx/conf/nginx.conf 文件，在相应位置加入 <code>include</code> 把以上2个文件包含进来</p>
+<pre><code>worker_processes  1;
+
+error_log  logs/error.log;
+error_log  logs/error.log  notice;
+error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+events {
+    worker_connections  10000;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #默认编码
+    charset utf-8;
+    tcp_nopush on; #防止网络阻塞
+    tcp_nodelay on; #防止网络阻塞
+
+    #keepalive_timeout  0;
+    keepalive_timeout  60;
+
+    #开启zip网页压缩
+    gzip  on;
+    gzip_min_length 1k;
+    gzip_buffers 4 8k;
+    gzip_http_version 1.1;
+    gzip_types text/plain application/x-javascript text/css application/xml;
+
+
+    #秒抢小助手配置
+    include ./vhosts/www.conf;
+    # 摩托车商城配置
+    include ./vhosts/moto.conf;
+
+}
+</code></pre><p>5、判断配置文件是否正确，如果正确就重启nginx</p>
+<p><code>nginx -t</code><br>提示：</p>
+<blockquote>
+<p>the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok<br>configuration file /usr/local/nginx/conf/nginx.conf test is successful</p>
+</blockquote>
+<p>测试成功, 重启nginx,输入命令：<br><code>nginx -s reload</code><br>重启之后访问<a href="http://www.bnuz163.com" target="_blank" rel="external">www.bnuz163.com</a>和<a href="http://moto.bnuz163.com" target="_blank" rel="external">moto.bnuz163.com</a>就是两个不同的站点啦！</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Nginx系列-301重定向设置的两种方法]]></title>
+      <url>http://474903784.github.io/2016/08/13/Nginx%E7%B3%BB%E5%88%97-301%E9%87%8D%E5%AE%9A%E5%90%91%E8%AE%BE%E7%BD%AE%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
+      <content type="html"><![CDATA[<p>　　重定向说直白点，就是通过方法将各种网络请求重新定个方向转到其它位置，也就是通常说的，网页跳转。做网站优化，我们基本知道url标准化需要采用301重定向。那么如何设置和制作301重定向呢？</p>
+<a id="more"></a>
+<h2 id="为什么要重定向？"><a href="#为什么要重定向？" class="headerlink" title="为什么要重定向？"></a>为什么要重定向？</h2><p>　　做网站优化，我们基本知道url标准化需要采用301重定向。当www.bnuz163.com和bnuz163.com都访问同一个站点时，重定向就可以把www.bnuz163.com和bnuz163.com合并，那么如果不合并会怎么样呢？如果不合并，访问这2个域名时服务器就会产生2个不相同的session，就会导致刚从bnuz163.com域名登陆后，再打开www.bnuz163.com会发现并没有登陆，需要重新登陆。这并不是我们要的结果，所以很有必要将这2个域名合并，使用同一个session。</p>
+<h2 id="如何设置301重定向？"><a href="#如何设置301重定向？" class="headerlink" title="如何设置301重定向？"></a>如何设置301重定向？</h2><h4 id="第一种方法："><a href="#第一种方法：" class="headerlink" title="第一种方法："></a>第一种方法：</h4><pre><code>server {
+      ...
+      server_name www.bnuz163.com bnuz163.com;
+      if ($host != &apos;www.bnuz163.com&apos; ) {
+         rewrite ^/(.*)$ http://www.bnuz163.com/$1 permanent;
+      }
+      ...
+}
+</code></pre><h4 id="第二种方法："><a href="#第二种方法：" class="headerlink" title="第二种方法："></a>第二种方法：</h4><pre><code>server {
+      ...
+      server_name www.bnuz163.com bnuz163.com;
+      if ($host = &apos;bnuz163.com&apos; ) {
+         rewrite ^/(.*)$ http://www.bnuz163.com/$1 permanent;
+      }
+      ...
+}
+</code></pre><p>这两种方法中， permanent是关键，详细说明见nginx重定向规则说明。</p>
+<blockquote>
+<p>last – 基本上都用这个Flag。<br>break – 中止Rewirte，不在继续匹配<br>redirect – 返回临时重定向的HTTP状态302<br>permanent – 返回永久重定向的HTTP状态301</p>
+</blockquote>
+<p>测试是否定向成功<br><code>/usr/local/nginx/sbin/nginx -t</code><br>提示：</p>
+<blockquote>
+<p>the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok<br>configuration file /usr/local/nginx/conf/nginx.conf test is successful</p>
+</blockquote>
+<p>测试成功, 重启nginx,输入命令：<br><code>/usr/local/nginx/sbin/nginx -s reload</code><br>重启之后测试一下~是否成功设定完成！</p>
+<h2 id="301与302重定向之间有什么区别？"><a href="#301与302重定向之间有什么区别？" class="headerlink" title="301与302重定向之间有什么区别？"></a>301与302重定向之间有什么区别？</h2><p>　　最后顺便说说什么是301重定向？什么是302重定向？它们有什么区别？</p>
+<h3 id="什么是301重定向？什么是301转向？"><a href="#什么是301重定向？什么是301转向？" class="headerlink" title="什么是301重定向？什么是301转向？"></a>什么是301重定向？什么是301转向？</h3><p>　　301转向(或叫301重定向，301跳转)是当用户或搜索引擎向网站服务器发出浏览请求时，服务器返回的HTTP数据流中头信息(header)中的状态码的一种，表示本网页永久性转移到另一个地址。 </p>
+<h3 id="什么是302重定向？"><a href="#什么是302重定向？" class="headerlink" title="什么是302重定向？"></a>什么是302重定向？</h3><p>　　302重定向又称之为302代表暂时性转移(Temporarily Moved )，英文名称：302 redirect。 也被认为是暂时重定向(temporary redirect)，一条对网站浏览器的指令来显示浏览器被要求显示的不同的URL，当一个网页经历过短期的URL的变化时使用。一个暂时重定向是一种服务器端的重定向，能够被搜索引擎蜘蛛正确地处理。 </p>
+<h3 id="301重定向与302重定向有什么区别？"><a href="#301重定向与302重定向有什么区别？" class="headerlink" title="301重定向与302重定向有什么区别？"></a>301重定向与302重定向有什么区别？</h3><p>　　302重定向是暂时的重定向，搜索引擎会抓取新的内容而保留旧的网址。因为服务器返回302代码，搜索引擎认为新的网址只是暂时的。<br>　　301重定向是永久的重定向，搜索引擎在抓取新内容的同时也将旧的网址替换为重定向之后的网址。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Nginx系列-基础功能配置]]></title>
+      <url>http://474903784.github.io/2016/08/12/Nginx%E7%B3%BB%E5%88%97-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD%E9%85%8D%E7%BD%AE/</url>
+      <content type="html"><![CDATA[<p>　　Nginx (“engine x”) 是一个高性能的 HTTP 和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。 Nginx 是由 Igor Sysoev 为俄罗斯访问量第二的 Rambler.ru 站点开发的，第一个公开版本0.1.0发布于2004年10月4日。其将源代码以类BSD许可证的形式发布，因它的稳定性、丰富的功能集、示例配置文件和低系统资源的消耗而闻名。</p>
+<a id="more"></a>
+<h2 id="Nginx基本配置"><a href="#Nginx基本配置" class="headerlink" title="Nginx基本配置"></a>Nginx基本配置</h2><p>　　打开nginx安装目录下的<code>conf/nginx.conf</code>配置文件，新增或修改一下内容:</p>
+<pre><code>worker_processes  1;
+
+error_log  logs/error.log;
+error_log  logs/error.log  notice;
+error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+events {
+    worker_connections  10000;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #默认编码
+    charset utf-8;
+    #防止网络阻塞
+    tcp_nopush on; 
+    #防止网络阻塞
+    tcp_nodelay on; 
+
+    keepalive_timeout  60;
+
+    #开启zip网页压缩
+    gzip  on;
+    gzip_min_length 1k;
+    gzip_buffers 4 8k;
+    gzip_http_version 1.1;
+    gzip_types text/plain application/x-javascript text/css application/xml;
+
+    #设定负载均衡的服务器列表
+    upstream moto.bnuz163.com{
+        server moto.bnuz163.com:8081 max_fails=1 fail_timeout=1s;
+    }
+
+    server {
+        #侦听80端口
+        listen             80;
+        #域名可以有多个，用空格隔开
+        server_name        moto.bnuz163.com;
+
+        #对 “/” 启用反向代理
+        location / {
+            proxy_pass http://moto.bnuz163.com;
+            proxy_connect_timeout 2s;
+
+            proxy_redirect off; 
+            proxy_set_header Host $host; #这一句至关重要
+            proxy_set_header X-Real-IP $remote_addr; 
+            #后端的Web服务器可以通过X-Forwarded-For获取用户真实IP
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+
+        #所有静态文件由nginx直接读取不经过tomcat
+        location ~* \.(htm|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid|doc|ppt|pdf|xls|mp3|wma|svg|js|css)$ {
+            root   ./www/moto/;
+            #缓存时间设置
+            expires 1h;
+        }
+
+        #500、502、503、504页面设置
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   ./html;
+        }
+
+        #403、404页面重定向地址
+        error_page  403 = http://moto.bnuz163.com:8081/error/403.html; 
+        error_page  404 = http://moto.bnuz163.com:8081/error/404.html;
+
+    }
+}
+</code></pre><p>　　到此为止，基本配置已经完成了，其中<code>http://moto.bnuz163.com</code>我是指向了<code>127.0.0.1</code>本机地址的，因为在部署集群服务器时，许多配置要用到其他服务器ip，但是每次修改ip比较难记住，所以可以修改hosts文件，把moto.bnuz163.com指向一个ip。</p>
+<h2 id="修改hosts文件"><a href="#修改hosts文件" class="headerlink" title="修改hosts文件"></a>修改hosts文件</h2><p>　　打开<code>hosts</code>文件，然后再最后一行添加上：</p>
+<pre><code>127.0.0.1   localhost
+</code></pre><p>　　完整配置如下：</p>
+<pre><code># Copyright (c) 1993-2009 Microsoft Corp.
+#
+# This is a sample HOSTS file used by Microsoft TCP/IP for Windows.
+#
+# This file contains the mappings of IP addresses to host names. Each
+# entry should be kept on an individual line. The IP address should
+# be placed in the first column followed by the corresponding host name.
+# The IP address and the host name should be separated by at least one
+# space.
+#
+# Additionally, comments (such as these) may be inserted on individual
+# lines or following the machine name denoted by a &apos;#&apos; symbol.
+#
+# For example:
+#
+#      102.54.94.97     rhino.acme.com          # source server
+#       38.25.63.10     x.acme.com              # x client host
+
+127.0.0.1       moto.bnuz163.com
+
+120.28.xx.xx    server1.bnuz163.com
+
+120.27.xx.xx    server2.bnuz163.com
+
+115.28.xx.xx    server3.bnuz163.com
+</code></pre><p>　　Nginx基本配置已经完成，可以满足大部分人需求了。还有些不常用的配置，但是也很重要的，我会再后面会继续分享出来。</p>
 ]]></content>
     </entry>
     
@@ -312,6 +1773,431 @@ $timeout(function(){
 //注销监听
 watch();
 </code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[排序算法-冒泡排序]]></title>
+      <url>http://474903784.github.io/2016/07/12/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</url>
+      <content type="html"><![CDATA[<p>　　冒泡排序顾名思义就是整个过程就像气泡一样往上升，单向冒泡排序的基本思想是（假设由小到大排序）：对于给定的n个记录，从第一个记录开始依次对邻居的两个记录进行比较，当前面的记录大于后面的记录时，交换位置，进行一轮比较和换位后，n个记录中的最大记录将位于第n位；然后对前（n-1）个记录进行第二轮比较；重复该过程直到进行比较的记录只剩下一个为止。</p>
+<a id="more"></a>
+<pre><code>public class Sort {
+
+    private static void sort3(int[] a) {
+        for(int i = 1; i &lt; a.length; ++i) {
+            for(int j = a.length - i; j &gt; 0; --j) {
+                if(a[j] &lt; a[j - 1]) {
+                    int temp = a[j];
+                    a[j] = a[j - 1];
+                    a[j - 1] = temp;
+                }
+            }
+
+        }
+    }
+
+
+    public static void main(String[] args) {
+        int[] a = {36, 27, 48, 12, 25, 65, 43, 57};
+        sort3(a);
+        print(a);
+    }
+
+    private static void print(int[] a) {
+        System.out.print(&quot;从小到大冒泡排序：&quot;);
+        for(int i : a)
+            System.out.print(i + &quot; &quot;);
+        System.out.println();
+    }
+
+}
+</code></pre><p>打印结果:</p>
+<blockquote>
+<p>从小到大冒泡排序：12 25 27 36 43 48 65 57 </p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[排序算法-希尔排序]]></title>
+      <url>http://474903784.github.io/2016/07/12/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/</url>
+      <content type="html"><![CDATA[<p>　　希尔排序也被称为“缩小增量排序”，其基本原理如下：先将待排序的数组元素分为多个子序列，使得每个子序列的元素个数相对较小，然后对各个子序列分别进行直接插入排序，待整个待排序序列“基本有序后”，最后再对所有元素进行一次直接插入排序。</p>
+<a id="more"></a>
+<pre><code>public class Sort {
+
+    private static void sort4(int[] a) {
+        for(int h = a.length / 2; h &gt; 0; h /= 2) {
+            for(int i = h; i &lt; a.length; ++i) {
+                int temp = a[i], j = i;
+                while(j &gt;= h &amp;&amp; a[j - h] &gt; temp)
+                {
+                    a[j] = a[j - h];
+                    j -= h;
+                }
+                a[j] = temp;
+            }
+        }
+
+    }
+
+    public static void main(String[] args) {
+        int[] a = {36, 27, 48, 12, 25, 65, 43, 57};
+        sort4(a);
+        print(a);
+    }
+
+    private static void print(int[] a) {
+        System.out.print(&quot;从小到大希尔排序：&quot;);
+        for(int i : a)
+            System.out.print(i + &quot; &quot;);
+        System.out.println();
+    }
+
+}
+</code></pre><p>打印结果：</p>
+<blockquote>
+<p>从小到大希尔排序：12 25 27 36 43 48 57 65</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[排序算法-插入排序]]></title>
+      <url>http://474903784.github.io/2016/07/12/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/</url>
+      <content type="html"><![CDATA[<p>　　插入排序基本原理如下：对于给定的一组记录，初始时假设第一个记录自成一个有序序列，其余记录为无序序列。接着从第二个记录开始，按照记录的大小依次将当前处理的记录插入到其之前的有序序列中，直至最后一个记录插入到有序序列中为止。</p>
+<a id="more"></a>
+<pre><code>public class Sort {
+
+    private static void sort2(int[] a) {
+        for(int i = 1; i &lt; a.length; ++i) {
+            int temp = a[i], j = i;
+            while(j &gt;= 1 &amp;&amp; a[j - 1] &gt; temp) {
+                a[j] = a[j - 1];
+                --j;
+            }
+            a[j] = temp;
+        }
+    }
+
+
+    public static void main(String[] args) {
+        int[] a = {36, 27, 48, 12, 25, 65, 43, 57};
+        sort2(a);
+        print(a);
+    }
+
+    private static void print(int[] a) {
+        System.out.print(&quot;从小到大插入排序：&quot;);
+        for(int i : a)
+            System.out.print(i + &quot; &quot;);
+        System.out.println();
+    }
+
+}
+</code></pre><p>打印结果：</p>
+<blockquote>
+<p>从小到大插入排序：12 25 27 36 43 48 57 65 </p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[排序算法-选择排序]]></title>
+      <url>http://474903784.github.io/2016/07/12/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/</url>
+      <content type="html"><![CDATA[<p>　　选择排序是一种简单直观的排序算法，其基本原理如下：对于给定的一组记录，经过第一轮比较后得到最小的记录，然后将该记录与第一个记录的位置进行交换；接着对不包括第一个记录以外的其他记录进行第二轮比较，得到最小的记录并与第二个记录进行位置交换；重复该过程，直到进行比较的记录只有一个为止。<br><a id="more"></a></p>
+<pre><code>public class Sort {
+
+    private static void sort1(int[] a) {
+        for(int i = 0; i &lt; a.length; ++i) {
+            int k = i;
+            for(int j = i + 1; j &lt; a.length; ++j) {
+                if(a[k] &gt; a[j]) {
+                    k = j;
+                }
+            }
+            if(k != i) {
+                int temp = a[i];
+                a[i] = a[k];
+                a[k] = temp;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] a = {36, 25, 48, 12, 25, 65, 43, 57};
+        sort1(a);
+        print(a);
+    }
+
+    private static void print(int[] a) {
+        System.out.print(&quot;从小到大选择排序：&quot;);
+        for(int i : a)
+            System.out.print(i + &quot; &quot;);
+        System.out.println();
+    }
+
+}
+</code></pre><p>打印结果：</p>
+<blockquote>
+<p>从小到大选择排序：12 25 25 36 43 48 57 65 </p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[SpringMVC controller的参数绑定注解详解]]></title>
+      <url>http://474903784.github.io/2016/06/24/springmvc%20controller%E7%9A%84%E5%8F%82%E6%95%B0%E7%BB%91%E5%AE%9A%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/</url>
+      <content type="html"><![CDATA[<p>使用springmvc写controller时，会使用到许多参数绑定的注解，在此记录下常使用到的注解及使用方法、使用情形。</p>
+<a id="more"></a>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>controller的method参数绑定常用的注解,我们根据他们处理的Request的不同内容部分分为四类（主要讲解常用类型）：</p>
+<ol>
+<li>处理requet uri 部分（这里指uri template中variable，不含queryString部分）的注解：   @PathVariable;  </li>
+<li>处理request header部分的注解：   @RequestHeader, @CookieValue;  </li>
+<li>处理request body部分的注解：@RequestParam,  @RequestBody;  </li>
+<li>处理attribute类型是注解： @SessionAttributes, @ModelAttribute;  </li>
+</ol>
+<h2 id="PathVariable"><a href="#PathVariable" class="headerlink" title="@PathVariable"></a>@PathVariable</h2><pre><code>@Controller
+@RequestMapping(&quot;/owners/{ownerId}&quot;)
+public class RelativePathUriTemplateController {
+
+    @RequestMapping(&quot;/pets/{petId}&quot;)
+     public void findPet(@PathVariable String ownerId, @PathVariable String petId, Model model) {    
+    // implementation omitted
+  }
+}
+</code></pre><p>上面代码把URI template 中变量 ownerId的值和petId的值，绑定到方法的参数上。若方法参数名称和需要绑定的uri template中变量名称不一致，需要在<strong>@PathVariable(“name”)</strong>指定uri template中的名称。</p>
+<h2 id="RequestHeader、-CookieValue"><a href="#RequestHeader、-CookieValue" class="headerlink" title="@RequestHeader、@CookieValue"></a>@RequestHeader、@CookieValue</h2><h3 id="RequestHeader"><a href="#RequestHeader" class="headerlink" title="@RequestHeader"></a>@RequestHeader</h3><p>@RequestHeader 注解，可以把Request请求header部分的值绑定到方法的参数上。<br>示例代码：  </p>
+<pre><code>//这是一个Request 的header部分：  
+Host：   localhost:8080  
+Accept：  text/html,application/xhtml+xml,application/  xml;q=0.9  
+Accept-Language： fr,en-gb;q=0.7,en;q=0.3  
+Accept-Encoding： gzip,deflate  
+Accept-Charset：  ISO-8859-1,utf-8;q=0.7,*;q=0.7  
+Keep-Alive：  300  
+</code></pre><hr>
+<pre><code>@RequestMapping(&quot;/displayHeaderInfo.do&quot;)
+public void displayHeaderInfo(@RequestHeader(&quot;Accept-Encoding&quot;) String encoding,
+    @RequestHeader(&quot;Keep-Alive&quot;) long keepAlive)  {
+  //...
+}
+</code></pre><p>上面的代码，把request header部分的 Accept-Encoding的值，绑定到参数encoding上了， Keep-Alive header的值绑定到参数keepAlive上。</p>
+<h3 id="CookieValue"><a href="#CookieValue" class="headerlink" title="@CookieValue"></a>@CookieValue</h3><p>@CookieValue 可以把Request header中关于cookie的值绑定到方法的参数上。</p>
+<p>例如有如下Cookie值：  </p>
+<pre><code>JSESSIONID=415A4AC178C59DACE0B2C9CA727CDD84
+</code></pre><p>参数绑定的代码：</p>
+<pre><code>@RequestMapping(&quot;/displayHeaderInfo.do&quot;)
+public void displayHeaderInfo(@CookieValue(&quot;JSESSIONID&quot;) String cookie)  {
+     //...
+}
+</code></pre><p>即把JSESSIONID的值绑定到参数cookie上。</p>
+<h2 id="RequestParam-RequestBody"><a href="#RequestParam-RequestBody" class="headerlink" title="@RequestParam, @RequestBody"></a>@RequestParam, @RequestBody</h2><h3 id="RequestParam"><a href="#RequestParam" class="headerlink" title="@RequestParam"></a>@RequestParam</h3><ol>
+<li>常用来处理<strong>简单类型</strong>的绑定，通过Request.getParameter() 获取的String可直接转换为简单类型的情况（ String–&gt; 简单类型的转换操作由ConversionService配置的转换器来完成）；因为使用request.getParameter()方式获取参数，所以可以处理get 方式中queryString的值，也可以处理post方式中 body data的值；  </li>
+<li>用来处理Content-Type: 为 application/x-www-form-urlencoded编码的内容，提交方式GET、POST；  </li>
+<li>该注解有两个属性： value、required； value用来指定要传入值的id名称，required用来指示参数是否必须绑定，默认的value是和传入的值相同，required默认值为true；  </li>
+</ol>
+<p>示例代码：</p>
+<pre><code>@Controller
+@RequestMapping(&quot;/pets&quot;)
+@SessionAttributes(&quot;pet&quot;)
+public class EditPetForm {
+
+// ...
+@RequestMapping(method = RequestMethod.GET)
+public String setupForm(@RequestParam(&quot;petId&quot;) int petId, ModelMap model) {
+    Pet pet = this.clinic.loadPet(petId);
+    model.addAttribute(&quot;pet&quot;, pet);
+    return &quot;petForm&quot;;
+}
+
+// ...
+</code></pre><h2 id="SessionAttributes-ModelAttribute"><a href="#SessionAttributes-ModelAttribute" class="headerlink" title="@SessionAttributes, @ModelAttribute"></a>@SessionAttributes, @ModelAttribute</h2><h3 id="SessionAttributes"><a href="#SessionAttributes" class="headerlink" title="@SessionAttributes"></a>@SessionAttributes</h3><p>该注解用来绑定HttpSession中的attribute对象的值，便于在方法中的参数里使用。<br>该注解有value、types两个属性，可以通过名字和类型指定要使用的attribute 对象；</p>
+<p>示例代码：</p>
+<pre><code>@Controller  
+@RequestMapping(&quot;/editPet.do&quot;)
+@SessionAttributes(&quot;pet&quot;)
+public class EditPetForm {
+    // ...
+}
+</code></pre><h3 id="ModelAttribute"><a href="#ModelAttribute" class="headerlink" title="@ModelAttribute"></a>@ModelAttribute</h3><p>该注解有两个用法，一个是用于方法上，一个是用于参数上；<br>用于方法上时：  通常用来在处理@RequestMapping之前，为请求绑定需要从后台查询的model；<br>用于参数上时： 用来通过名称对应，把相应名称的值绑定到注解的参数bean上；要绑定的值来源于：  </p>
+<ol>
+<li>@SessionAttributes 启用的attribute 对象上；  </li>
+<li>@ModelAttribute 用于方法上时指定的model对象；  </li>
+<li>上述两种情况都没有时，new一个需要绑定的bean对象，然后把request中按名称对应的方式把值绑定到bean中。  </li>
+</ol>
+<p>用到方法上@ModelAttribute的示例代码：</p>
+<pre><code>// Add one attribute
+// The return value of the method is added to the model under the name &quot;account&quot;
+// You can customize the name via @ModelAttribute(&quot;myAccount&quot;)
+@ModelAttribute
+public Account addAccount(@RequestParam String number) {
+    return accountManager.findAccount(number);
+}
+</code></pre><p>这种方式实际的效果就是在调用@RequestMapping的方法之前，为request对象的model里put（“account”， Account）；</p>
+<p>用在参数上的@ModelAttribute示例代码：</p>
+<pre><code>@RequestMapping(value=&quot;/owners/{ownerId}/pets/{petId}/edit&quot;, method = RequestMethod.POST)
+public String processSubmit(@ModelAttribute Pet pet) {
+       //...
+}
+</code></pre><p>首先查询 @SessionAttributes有无绑定的Pet对象，若没有则查询@ModelAttribute方法层面上是否绑定了Pet对象，若没有则将URI template中的值按对应的名称绑定到Pet对象的各属性上。</p>
+<p>##疑难点##</p>
+<ul>
+<li>在不给定注解的情况下，参数是怎样绑定的？</li>
+</ul>
+<p>若要绑定的对象时简单类型：  调用@RequestParam来处理的。<br>若要绑定的对象时复杂类型：  调用@ModelAttribute来处理的。  </p>
+<p>这里的简单类型指java的原始类型(boolean, int 等)、原始类型对象（Boolean, Int等）、String、Date等ConversionService里可以直接String转换成目标对象的类型；</p>
+<pre><code>@RequestMapping ({&quot;/&quot;, &quot;/home&quot;})
+public String showHomePage(String key, User user){
+
+    logger.debug(&quot;key=&quot;+key);
+
+    return &quot;home&quot;;
+}
+</code></pre><p>第一个参数，默认调用@RequestParam来处理。<br>第二个参数，默认调用@ModelAttribute来处理。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[SpringMVC拦截器（资源和权限管理）]]></title>
+      <url>http://474903784.github.io/2016/06/10/SpringMVC%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%88%E8%B5%84%E6%BA%90%E5%92%8C%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%EF%BC%89/</url>
+      <content type="html"><![CDATA[<p>　　SpringMVC 中的Interceptor 拦截器也是相当重要和相当有用的，它的主要作用是拦截用户的请求并进行相应的处理。比如通过它来进行权限验证，或者是来判断用户是否登陆，或者是像12306 那样子判断当前时间是否是购票时间。</p>
+<a id="more"></a>
+<h4 id="1-DispatcherServlet"><a href="#1-DispatcherServlet" class="headerlink" title="1.DispatcherServlet"></a>1.DispatcherServlet</h4><p>　　SpringMVC具有统一的入口DispatcherServlet，所有的请求都通过DispatcherServlet。<br>　　DispatcherServlet是前置控制器，配置在web.xml文件中的。拦截匹配的请求，Servlet拦截匹配规则要自已定义，把拦截下来的请求，依据某某规则分发到目标Controller来处理。  所以我们现在web.xml中加入以下配置：</p>
+<pre><code>&lt;!-- 初始化 DispatcherServlet时，该框架在 web应用程序WEB-INF目录中寻找一个名为[servlet-名称]-servlet.xml的文件，  
+并在那里定义相关的Beans，重写在全局中定义的任何Beans --&gt;  
+&lt;servlet&gt;  
+ &lt;servlet-name&gt;springMybatis&lt;/servlet-name&gt;  
+ &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;  
+ &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;  
+&lt;/servlet&gt;  
+&lt;servlet-mapping&gt;  
+ &lt;servlet-name&gt;springMybatis&lt;/servlet-name&gt;  
+ &lt;!-- 所有的的请求，都会被DispatcherServlet处理 --&gt;  
+ &lt;url-pattern&gt;/&lt;/url-pattern&gt;  
+&lt;/servlet-mapping&gt;  
+</code></pre><h4 id="2-静态资源不拦截"><a href="#2-静态资源不拦截" class="headerlink" title="2.静态资源不拦截"></a>2.静态资源不拦截</h4><p>　　如果只配置拦截类似于*.do格式的url，则对静态资源的访问是没有问题的，但是如果配置拦截了所有的请求（如我们上面配置的“/”），就会造成js文件、css文件、图片文件等静态资源无法访问。<br>　　一般实现拦截器主要是为了权限管理，主要是拦截一些url请求，所以不对静态资源进行拦截。要过滤掉静态资源一般有两种方式，<br>　　第一种是采用<mvc:default-servlet-handler>，（一般Web应用服务器默认的Servlet名称是”default”，所以这里我们激活Tomcat的defaultServlet来处理静态文件，在web.xml里配置如下代码即可：）</mvc:default-servlet-handler></p>
+<pre><code>&lt;!--　该servlet为tomcat,jetty等容器提供,将静态资源映射从/改为/static/目录，如原来访问　http://localhost/foo.css　,现在http://localhost/static/foo.css　--&gt;  
+&lt;!-- 不拦截静态文件 --&gt;  
+    &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;default&lt;/servlet-name&gt;  
+    &lt;url-pattern&gt;/js/*&lt;/url-pattern&gt;  
+    &lt;url-pattern&gt;/css/*&lt;/url-pattern&gt;  
+    &lt;url-pattern&gt;/images/*&lt;/url-pattern&gt;  
+    &lt;url-pattern&gt;/fonts/*&lt;/url-pattern&gt;  
+&lt;/servlet-mapping&gt;  
+</code></pre><p>　　Tomcat, Jetty, JBoss, and GlassFish  默认 Servlet的名字 – “default”<br>　　Resin 默认 Servlet的名字 – “resin-file”<br>　　WebLogic 默认 Servlet的名字  – “FileServlet”<br>　　WebSphere  默认 Servlet的名字 – “SimpleFileServlet”</p>
+<p>　　如果你所有的Web应用服务器的默认Servlet名称不是”default”，则需要通过default-servlet-name属性显示指定：</p>
+<pre><code>&lt;mvc:default-servlet-handler default-servlet-name=&quot;所使用的Web服务器默认使用的Servlet名称&quot; /&gt;
+</code></pre><p>　　第二种是采用<mvc:resources>，在springmvc的配置文件中加入以下代码：</mvc:resources></p>
+<pre><code>&lt;mvc:resources mapping=&quot;/js/**&quot; location=&quot;/static_resources/javascript/&quot;/&gt;    
+&lt;mvc:resources mapping=&quot;/styles/**&quot; location=&quot;/static_resources/css/&quot;/&gt;    
+&lt;mvc:resources mapping=&quot;/images/**&quot; location=&quot;/static_resources/images/&quot;/&gt; 
+</code></pre><h4 id="3-自定义拦截器"><a href="#3-自定义拦截器" class="headerlink" title="3.自定义拦截器"></a>3.自定义拦截器</h4><p>　　SpringMVC的拦截器HandlerInterceptorAdapter对应提供了三个preHandle，postHandle，afterCompletion方法。preHandle在业务处理器处理请求之前被调用，<br>　　postHandle在业务处理器处理请求执行完成后,生成视图之前执行，afterCompletion在DispatcherServlet完全处理完请求后被调用,可用于清理资源等 。所以要想实现自己的权限管理逻辑，需要继承HandlerInterceptorAdapter并重写其三个方法。<br>　　首先在springmvc.xml中加入自己定义的拦截器我的实现逻辑CommonInterceptor，</p>
+<pre><code>&lt;!--配置拦截器, 多个拦截器,顺序执行 --&gt;  
+&lt;mvc:interceptors&gt;    
+    &lt;mvc:interceptor&gt;    
+        &lt;!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller --&gt;  
+        &lt;mvc:mapping path=&quot;/&quot; /&gt;  
+        &lt;mvc:mapping path=&quot;/user/**&quot; /&gt;  
+        &lt;mvc:mapping path=&quot;/test/**&quot; /&gt;  
+        &lt;bean class=&quot;com.alibaba.interceptor.CommonInterceptor&quot;&gt;&lt;/bean&gt;    
+    &lt;/mvc:interceptor&gt;  
+    &lt;!-- 当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法 --&gt;  
+&lt;/mvc:interceptors&gt;  
+</code></pre><p>　　我的拦截逻辑是“在未登录前，任何访问url都跳转到login页面；登录成功后跳转至先前的url”，具体代码如下：</p>
+<pre><code>package com.alibaba.interceptor;  
+
+import javax.servlet.http.HttpServletRequest;  
+import javax.servlet.http.HttpServletResponse;  
+
+import org.slf4j.Logger;  
+import org.slf4j.LoggerFactory;  
+import org.springframework.web.servlet.ModelAndView;  
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;  
+
+import com.alibaba.util.RequestUtil;  
+
+
+/** 
+ * @author tfj 
+ * 2014-8-1 
+ */  
+public class CommonInterceptor extends HandlerInterceptorAdapter{  
+    private final Logger log = LoggerFactory.getLogger(CommonInterceptor.class);  
+    public static final String LAST_PAGE = &quot;com.alibaba.lastPage&quot;;  
+    /* 
+     * 利用正则映射到需要拦截的路径     
+
+    private String mappingURL; 
+
+    public void setMappingURL(String mappingURL) {     
+               this.mappingURL = mappingURL;     
+    }    
+  */  
+    /**  
+     * 在业务处理器处理请求之前被调用  
+     * 如果返回false  
+     *     从当前的拦截器往回执行所有拦截器的afterCompletion(),再退出拦截器链 
+     * 如果返回true  
+     *    执行下一个拦截器,直到所有的拦截器都执行完毕  
+     *    再执行被拦截的Controller  
+     *    然后进入拦截器链,  
+     *    从最后一个拦截器往回执行所有的postHandle()  
+     *    接着再从最后一个拦截器往回执行所有的afterCompletion()  
+     */    
+    @Override    
+    public boolean preHandle(HttpServletRequest request,    
+            HttpServletResponse response, Object handler) throws Exception {    
+        if (&quot;GET&quot;.equalsIgnoreCase(request.getMethod())) {  
+            RequestUtil.saveRequest();  
+        }  
+        log.info(&quot;==============执行顺序: 1、preHandle================&quot;);    
+        String requestUri = request.getRequestURI();  
+        String contextPath = request.getContextPath();  
+        String url = requestUri.substring(contextPath.length());  
+
+        log.info(&quot;requestUri:&quot;+requestUri);    
+        log.info(&quot;contextPath:&quot;+contextPath);    
+        log.info(&quot;url:&quot;+url);    
+
+        String username =  (String)request.getSession().getAttribute(&quot;user&quot;);   
+        if(username == null){  
+            log.info(&quot;Interceptor：跳转到login页面！&quot;);  
+            request.getRequestDispatcher(&quot;/WEB-INF/jsp/login.jsp&quot;).forward(request, response);  
+            return false;  
+        }else  
+            return true;     
+    }    
+
+    /** 
+     * 在业务处理器处理请求执行完成后,生成视图之前执行的动作    
+     * 可在modelAndView中加入数据，比如当前时间 
+     */  
+    @Override    
+    public void postHandle(HttpServletRequest request,    
+            HttpServletResponse response, Object handler,    
+            ModelAndView modelAndView) throws Exception {     
+        log.info(&quot;==============执行顺序: 2、postHandle================&quot;);    
+        if(modelAndView != null){  //加入当前时间    
+            modelAndView.addObject(&quot;var&quot;, &quot;测试postHandle&quot;);    
+        }    
+    }    
+
+    /**  
+     * 在DispatcherServlet完全处理完请求后被调用,可用于清理资源等   
+     *   
+     * 当有拦截器抛出异常时,会从当前拦截器往回执行所有的拦截器的afterCompletion()  
+     */    
+    @Override    
+    public void afterCompletion(HttpServletRequest request,    
+            HttpServletResponse response, Object handler, Exception ex)    
+            throws Exception {    
+        log.info(&quot;==============执行顺序: 3、afterCompletion================&quot;);    
+    }    
+
+}    
+</code></pre><p>　　注：上述代码里我写了一个RequestUtil,主要实现获取当前Request、Session对象，保存和加密页面，取出等功能。<br>至此，拦截器已经实现了，效果如图：<br>我直接访问/test/hello，会被拦截</p>
+<p>登录成功后会跳转至/test/hello对应的页面</p>
+<p><img src="http://i.imgur.com/xfFf22l.png" alt=""></p>
+]]></content>
     </entry>
     
     <entry>
