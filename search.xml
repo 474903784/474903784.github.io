@@ -4,6 +4,115 @@
   
     
     <entry>
+      <title><![CDATA[sql之同一字段满足多个条件查询]]></title>
+      <url>http://474903784.github.io/2016/11/01/sql%E4%B9%8B%E5%90%8C%E4%B8%80%E5%AD%97%E6%AE%B5%E6%BB%A1%E8%B6%B3%E5%A4%9A%E4%B8%AA%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2/</url>
+      <content type="html"><![CDATA[<p>　　项目中使用的是sql server数据库，有一个业务是要查询能满足维修多个项目的维修店有哪些，开始用intersect来做交集查询的，但由于查询效率低，改用了group by和having的方式来做查询，提高查询效率。</p>
+<a id="more"></a>
+<p>数据库表的关系是多对多关系，表关系如下：</p>
+<p>维修店 maintaince表：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>维修店1  </td>
+</tr>
+<tr>
+<td>2</td>
+<td>维修店2  </td>
+</tr>
+<tr>
+<td>3</td>
+<td>维修店3  </td>
+</tr>
+</tbody>
+</table>
+<p>项目 item表：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>小保养  </td>
+</tr>
+<tr>
+<td>2</td>
+<td>换机油  </td>
+</tr>
+<tr>
+<td>3</td>
+<td>换刹车油  </td>
+</tr>
+</tbody>
+</table>
+<p>维修店支持维修项目的关系 support表：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>maintainceId</th>
+<th>itemId</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>6</td>
+<td>1</td>
+<td>3 </td>
+</tr>
+</tbody>
+</table>
+<p>比如要查询：<strong>能同时做小保养和换刹车油项目的维修店有哪些？</strong></p>
+<p>最开始使用的intersect查询方法：</p>
+<pre><code>select m.name from maintaince m,item i,support s where s.maintainceId = m.id and s.itemId = i.id and i.name = &apos;小保养&apos;
+intersect
+select m.name from maintaince m,item i,support s where s.maintainceId = m.id and s.itemId = i.id and i.name = &apos;换刹车油&apos;;
+</code></pre><p>先查找出能做小保养的维修店，然后查找出能做换刹车油的维修店，求得他们的交集，就是既能做小保养又能做换刹车油项目的维修店了。  </p>
+<p>但是实际项目中，可能有时候查询了能同时做几十个项目的维修店，此时在测试过程中发现查询效率就很低了。因此做了一些改进。</p>
+<hr>
+<p>采用group by和having的方式来做查询：</p>
+<pre><code>select m.name from maintaince m,item i,support s where s.maintainceId = m.id and s.itemId = i.id and i.name = &apos;小保养&apos; or id.name = &apos;换刹车油&apos; 
+group by m.id having count(1) = 2;
+</code></pre><p>此查询方法是先查找出所有能同时做小保养和换刹车油的维修店，然后依据维修店的id来做分组，再通过having设置条件，此处是2个条件，所以是筛选出此维修店数据等于2的，即是既能做小保养又能做换刹车油项目的维修店了。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[设计模式-适配器模式（Adapter）]]></title>
       <url>http://474903784.github.io/2016/10/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F%EF%BC%88Adapter%EF%BC%89/</url>
       <content type="html"><![CDATA[<p>　　如果一个类要实现一个具有很多抽象方法的接口，但是本身只需要实现接口中的部分方法便可以达成目的，所以此时就需要一个中间的过渡类，但此过渡类又不希望直接使用，所以将此类定义为抽象类最为合适，再让以后的子类直接继承该抽象类便可选择性的覆写所需要的方法，而此抽象类便是适配器类。</p>
