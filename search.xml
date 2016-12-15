@@ -188,6 +188,97 @@ public class WrapperDemo {
     </entry>
     
     <entry>
+      <title><![CDATA[排序算法-快速排序（java多种实现）]]></title>
+      <url>http://474903784.github.io/2016/10/19/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
+      <content type="html"><![CDATA[<p>　　快速排序是一种要求时间最快的排序算法，其基本原理如下：选择一个基准元素,通常选择第一个元素或者最后一个元素,通过一趟扫描，将待排序列分成两部分,一部分比基准元素小,一部分大于等于基准元素,此时基准元素在其排好序后的正确位置,然后再用同样的方法递归地排序划分的两部分。<br><a id="more"></a></p>
+<h3 id="第一种实现"><a href="#第一种实现" class="headerlink" title="第一种实现"></a>第一种实现</h3><p>实例：<br><img src="/images/排序算法-快速排序（java多种实现）/1336807447_1275.png" alt="快排实例图"></p>
+<p>实现：</p>
+<pre><code>public int getMiddle(int[] list, int low, int high) {
+    int tmp = list[low]; // 数组的第一个作为中轴
+    while (low &lt; high) {
+        while (low &lt; high &amp;&amp; list[high] &gt;= tmp) {
+            high--;
+        }
+
+        list[low] = list[high]; // 比中轴小的记录移到低端
+
+        while (low &lt; high &amp;&amp; list[low] &lt;= tmp) {
+            low++;
+        }
+
+        list[high] = list[low]; // 比中轴大的记录移到高端
+    }
+
+    list[low] = tmp; // 中轴记录到尾
+    return low; // 返回中轴的位置
+}
+
+public void quickSort(int[] list, int low, int high) {
+    if (low &lt; high) {
+        int middle = getMiddle(list, low, high); // 将list数组进行一分为二
+        quickSort(list, low, middle - 1); // 对低字表进行递归排序
+        quickSort(list, middle + 1, high); // 对高字表进行递归排序
+    }
+}
+</code></pre><h3 id="第二种实现"><a href="#第二种实现" class="headerlink" title="第二种实现"></a>第二种实现</h3><pre><code>public static void quickSort(int[] numbers, int start, int end) {   
+    if (start &lt; end) {   
+        int base = numbers[start]; // 选定的基准值（第一个数值作为基准值）   
+        int temp; // 记录临时中间值   
+        int i = start, j = end;   
+        do {   
+            while ((numbers[i] &lt; base) &amp;&amp; (i &lt; end))   
+                i++;   
+            while ((numbers[j] &gt; base) &amp;&amp; (j &gt; start))   
+                j--;   
+            if (i &lt;= j) {   
+                temp = numbers[i];   
+                numbers[i] = numbers[j];   
+                numbers[j] = temp;   
+                i++;   
+                j--;   
+            }   
+        } while (i &lt;= j);   
+        if (start &lt; j)   
+            quickSort(numbers, start, j);   
+        if (end &gt; i)   
+            quickSort(numbers, i, end);   
+    }   
+}
+</code></pre><h3 id="第三种实现"><a href="#第三种实现" class="headerlink" title="第三种实现"></a>第三种实现</h3><pre><code>public static List&lt;Integer&gt; quicksort(final List&lt;Integer&gt; numbers){
+    if(numbers.size() &lt;2)
+        return numbers;
+
+    final Integer pivot = numbers.get(0); // 选定的基准值（第一个数值作为基准值）   
+    final List&lt;Integer&gt; lower = new ArrayList&lt;Integer&gt;();
+    final List&lt;Integer&gt; higher = new ArrayList&lt;Integer&gt;();
+
+    for(int i = 1; i &lt; numbers.size();i++){
+        if(numbers.get(i) &lt; pivot)
+            lower.add(numbers.get(i));
+        else 
+            higher.add(numbers.get(i));
+    }
+
+    final List&lt;Integer&gt; sorted = quicksort(lower);  //比基准值低的数再递归排序
+
+    sorted.add(pivot);   //基准值在中间
+    sorted.addAll(quicksort(higher));    //比基准值大的数再递归排序
+
+    return sorted;
+}
+</code></pre><h3 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h3><pre><code>public static void main(String[] args) {
+    int a[] = { 49, 38, 65, 97, 76, 13, 27, 49, 78, 34, 12, 64, 5, 34, 15, 35, 25,53, 51 };
+    quickSort(a, 0, a.length - 1);
+    System.out.println(&quot;从小到大快速排序：&quot; + Arrays.toString(a));
+}
+</code></pre><p>打印结果：</p>
+<blockquote>
+<p>从小到大快速排序：[5, 12, 13, 15, 25, 27, 34, 34, 35, 38, 49, 49, 51, 53, 64, 65, 76, 78, 97]</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[设计模式-观察者模式（Observer）]]></title>
       <url>http://474903784.github.io/2016/10/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%EF%BC%88Observer%EF%BC%89/</url>
       <content type="html"><![CDATA[<p>所谓观察者模式，举个例子现在许多购房者都密切观察者房价的变化，当房价变化时，所有购房者都能观察到，以上的购房者属于观察者，这便是观察者模式。</p>

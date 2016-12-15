@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="SpringMVC," />
+  <meta name="keywords" content="排序,算法," />
 
 
 
@@ -84,16 +84,18 @@
 
 
 
-<meta name="description" content="使用springmvc写controller时，会使用到许多参数绑定的注解，在此记录下常使用到的注解及使用方法、使用情形。">
+<meta name="description" content="快速排序是一种要求时间最快的排序算法，其基本原理如下：选择一个基准元素,通常选择第一个元素或者最后一个元素,通过一趟扫描，将待排序列分成两部分,一部分比基准元素小,一部分大于等于基准元素,此时基准元素在其排好序后的正确位置,然后再用同样的方法递归地排序划分的两部分。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SpringMVC controller的参数绑定注解详解">
-<meta property="og:url" content="http://474903784.github.io/2016/06/24/springmvc controller的参数绑定注解详解/index.html">
+<meta property="og:title" content="排序算法-快速排序（java多种实现）">
+<meta property="og:url" content="http://474903784.github.io/2016/10/19/排序算法-快速排序/index.html">
 <meta property="og:site_name" content="星火燎猿">
-<meta property="og:description" content="使用springmvc写controller时，会使用到许多参数绑定的注解，在此记录下常使用到的注解及使用方法、使用情形。">
-<meta property="og:updated_time" content="2016-10-19T15:51:01.189Z">
+<meta property="og:description" content="快速排序是一种要求时间最快的排序算法，其基本原理如下：选择一个基准元素,通常选择第一个元素或者最后一个元素,通过一趟扫描，将待排序列分成两部分,一部分比基准元素小,一部分大于等于基准元素,此时基准元素在其排好序后的正确位置,然后再用同样的方法递归地排序划分的两部分。">
+<meta property="og:image" content="http://474903784.github.io/images/排序算法-快速排序（java多种实现）/1336807447_1275.png">
+<meta property="og:updated_time" content="2016-12-15T07:52:17.327Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SpringMVC controller的参数绑定注解详解">
-<meta name="twitter:description" content="使用springmvc写controller时，会使用到许多参数绑定的注解，在此记录下常使用到的注解及使用方法、使用情形。">
+<meta name="twitter:title" content="排序算法-快速排序（java多种实现）">
+<meta name="twitter:description" content="快速排序是一种要求时间最快的排序算法，其基本原理如下：选择一个基准元素,通常选择第一个元素或者最后一个元素,通过一趟扫描，将待排序列分成两部分,一部分比基准元素小,一部分大于等于基准元素,此时基准元素在其排好序后的正确位置,然后再用同样的方法递归地排序划分的两部分。">
+<meta name="twitter:image" content="http://474903784.github.io/images/排序算法-快速排序（java多种实现）/1336807447_1275.png">
 
 
 
@@ -114,9 +116,9 @@
 
 
 
-  <link rel="canonical" href="http://474903784.github.io/2016/06/24/springmvc controller的参数绑定注解详解/"/>
+  <link rel="canonical" href="http://474903784.github.io/2016/10/19/排序算法-快速排序/"/>
 
-  <title> SpringMVC controller的参数绑定注解详解 | 星火燎猿 </title>
+  <title> 排序算法-快速排序（java多种实现） | 星火燎猿 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -289,7 +291,7 @@
             
             
               
-                SpringMVC controller的参数绑定注解详解
+                排序算法-快速排序（java多种实现）
               
             
           </h1>
@@ -301,8 +303,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-24T12:06:54+08:00" content="2016-06-24">
-              2016-06-24
+            <time itemprop="dateCreated" datetime="2016-10-19T09:13:10+08:00" content="2016-10-19">
+              2016-10-19
             </time>
           </span>
 
@@ -315,8 +317,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/SpringMVC/" itemprop="url" rel="index">
-                    <span itemprop="name">SpringMVC</span>
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
                   </a>
                 </span>
 
@@ -331,8 +333,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/06/24/springmvc controller的参数绑定注解详解/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/24/springmvc controller的参数绑定注解详解/" itemprop="commentsCount"></span>
+                <a href="/2016/10/19/排序算法-快速排序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/19/排序算法-快速排序/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -355,112 +357,91 @@
       
 
       
-        <p>使用springmvc写controller时，会使用到许多参数绑定的注解，在此记录下常使用到的注解及使用方法、使用情形。</p>
-<a id="more"></a>
-<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>controller的method参数绑定常用的注解,我们根据他们处理的Request的不同内容部分分为四类（主要讲解常用类型）：</p>
-<ol>
-<li>处理requet uri 部分（这里指uri template中variable，不含queryString部分）的注解：   @PathVariable;  </li>
-<li>处理request header部分的注解：   @RequestHeader, @CookieValue;  </li>
-<li>处理request body部分的注解：@RequestParam,  @RequestBody;  </li>
-<li>处理attribute类型是注解： @SessionAttributes, @ModelAttribute;  </li>
-</ol>
-<h2 id="PathVariable"><a href="#PathVariable" class="headerlink" title="@PathVariable"></a>@PathVariable</h2><pre><code>@Controller
-@RequestMapping(&quot;/owners/{ownerId}&quot;)
-public class RelativePathUriTemplateController {
+        <p>　　快速排序是一种要求时间最快的排序算法，其基本原理如下：选择一个基准元素,通常选择第一个元素或者最后一个元素,通过一趟扫描，将待排序列分成两部分,一部分比基准元素小,一部分大于等于基准元素,此时基准元素在其排好序后的正确位置,然后再用同样的方法递归地排序划分的两部分。<br><a id="more"></a></p>
+<h3 id="第一种实现"><a href="#第一种实现" class="headerlink" title="第一种实现"></a>第一种实现</h3><p>实例：<br><img src="/images/排序算法-快速排序（java多种实现）/1336807447_1275.png" alt="快排实例图"></p>
+<p>实现：</p>
+<pre><code>public int getMiddle(int[] list, int low, int high) {
+    int tmp = list[low]; // 数组的第一个作为中轴
+    while (low &lt; high) {
+        while (low &lt; high &amp;&amp; list[high] &gt;= tmp) {
+            high--;
+        }
 
-    @RequestMapping(&quot;/pets/{petId}&quot;)
-     public void findPet(@PathVariable String ownerId, @PathVariable String petId, Model model) {    
-    // implementation omitted
-  }
-}
-</code></pre><p>上面代码把URI template 中变量 ownerId的值和petId的值，绑定到方法的参数上。若方法参数名称和需要绑定的uri template中变量名称不一致，需要在<strong>@PathVariable(“name”)</strong>指定uri template中的名称。</p>
-<h2 id="RequestHeader、-CookieValue"><a href="#RequestHeader、-CookieValue" class="headerlink" title="@RequestHeader、@CookieValue"></a>@RequestHeader、@CookieValue</h2><h3 id="RequestHeader"><a href="#RequestHeader" class="headerlink" title="@RequestHeader"></a>@RequestHeader</h3><p>@RequestHeader 注解，可以把Request请求header部分的值绑定到方法的参数上。<br>示例代码：  </p>
-<pre><code>//这是一个Request 的header部分：  
-Host：   localhost:8080  
-Accept：  text/html,application/xhtml+xml,application/  xml;q=0.9  
-Accept-Language： fr,en-gb;q=0.7,en;q=0.3  
-Accept-Encoding： gzip,deflate  
-Accept-Charset：  ISO-8859-1,utf-8;q=0.7,*;q=0.7  
-Keep-Alive：  300  
-</code></pre><hr>
-<pre><code>@RequestMapping(&quot;/displayHeaderInfo.do&quot;)
-public void displayHeaderInfo(@RequestHeader(&quot;Accept-Encoding&quot;) String encoding,
-    @RequestHeader(&quot;Keep-Alive&quot;) long keepAlive)  {
-  //...
-}
-</code></pre><p>上面的代码，把request header部分的 Accept-Encoding的值，绑定到参数encoding上了， Keep-Alive header的值绑定到参数keepAlive上。</p>
-<h3 id="CookieValue"><a href="#CookieValue" class="headerlink" title="@CookieValue"></a>@CookieValue</h3><p>@CookieValue 可以把Request header中关于cookie的值绑定到方法的参数上。</p>
-<p>例如有如下Cookie值：  </p>
-<pre><code>JSESSIONID=415A4AC178C59DACE0B2C9CA727CDD84
-</code></pre><p>参数绑定的代码：</p>
-<pre><code>@RequestMapping(&quot;/displayHeaderInfo.do&quot;)
-public void displayHeaderInfo(@CookieValue(&quot;JSESSIONID&quot;) String cookie)  {
-     //...
-}
-</code></pre><p>即把JSESSIONID的值绑定到参数cookie上。</p>
-<h2 id="RequestParam-RequestBody"><a href="#RequestParam-RequestBody" class="headerlink" title="@RequestParam, @RequestBody"></a>@RequestParam, @RequestBody</h2><h3 id="RequestParam"><a href="#RequestParam" class="headerlink" title="@RequestParam"></a>@RequestParam</h3><ol>
-<li>常用来处理<strong>简单类型</strong>的绑定，通过Request.getParameter() 获取的String可直接转换为简单类型的情况（ String–&gt; 简单类型的转换操作由ConversionService配置的转换器来完成）；因为使用request.getParameter()方式获取参数，所以可以处理get 方式中queryString的值，也可以处理post方式中 body data的值；  </li>
-<li>用来处理Content-Type: 为 application/x-www-form-urlencoded编码的内容，提交方式GET、POST；  </li>
-<li>该注解有两个属性： value、required； value用来指定要传入值的id名称，required用来指示参数是否必须绑定，默认的value是和传入的值相同，required默认值为true；  </li>
-</ol>
-<p>示例代码：</p>
-<pre><code>@Controller
-@RequestMapping(&quot;/pets&quot;)
-@SessionAttributes(&quot;pet&quot;)
-public class EditPetForm {
+        list[low] = list[high]; // 比中轴小的记录移到低端
 
-// ...
-@RequestMapping(method = RequestMethod.GET)
-public String setupForm(@RequestParam(&quot;petId&quot;) int petId, ModelMap model) {
-    Pet pet = this.clinic.loadPet(petId);
-    model.addAttribute(&quot;pet&quot;, pet);
-    return &quot;petForm&quot;;
+        while (low &lt; high &amp;&amp; list[low] &lt;= tmp) {
+            low++;
+        }
+
+        list[high] = list[low]; // 比中轴大的记录移到高端
+    }
+
+    list[low] = tmp; // 中轴记录到尾
+    return low; // 返回中轴的位置
 }
 
-// ...
-</code></pre><h2 id="SessionAttributes-ModelAttribute"><a href="#SessionAttributes-ModelAttribute" class="headerlink" title="@SessionAttributes, @ModelAttribute"></a>@SessionAttributes, @ModelAttribute</h2><h3 id="SessionAttributes"><a href="#SessionAttributes" class="headerlink" title="@SessionAttributes"></a>@SessionAttributes</h3><p>该注解用来绑定HttpSession中的attribute对象的值，便于在方法中的参数里使用。<br>该注解有value、types两个属性，可以通过名字和类型指定要使用的attribute 对象；</p>
-<p>示例代码：</p>
-<pre><code>@Controller  
-@RequestMapping(&quot;/editPet.do&quot;)
-@SessionAttributes(&quot;pet&quot;)
-public class EditPetForm {
-    // ...
+public void quickSort(int[] list, int low, int high) {
+    if (low &lt; high) {
+        int middle = getMiddle(list, low, high); // 将list数组进行一分为二
+        quickSort(list, low, middle - 1); // 对低字表进行递归排序
+        quickSort(list, middle + 1, high); // 对高字表进行递归排序
+    }
 }
-</code></pre><h3 id="ModelAttribute"><a href="#ModelAttribute" class="headerlink" title="@ModelAttribute"></a>@ModelAttribute</h3><p>该注解有两个用法，一个是用于方法上，一个是用于参数上；<br>用于方法上时：  通常用来在处理@RequestMapping之前，为请求绑定需要从后台查询的model；<br>用于参数上时： 用来通过名称对应，把相应名称的值绑定到注解的参数bean上；要绑定的值来源于：  </p>
-<ol>
-<li>@SessionAttributes 启用的attribute 对象上；  </li>
-<li>@ModelAttribute 用于方法上时指定的model对象；  </li>
-<li>上述两种情况都没有时，new一个需要绑定的bean对象，然后把request中按名称对应的方式把值绑定到bean中。  </li>
-</ol>
-<p>用到方法上@ModelAttribute的示例代码：</p>
-<pre><code>// Add one attribute
-// The return value of the method is added to the model under the name &quot;account&quot;
-// You can customize the name via @ModelAttribute(&quot;myAccount&quot;)
-@ModelAttribute
-public Account addAccount(@RequestParam String number) {
-    return accountManager.findAccount(number);
+</code></pre><h3 id="第二种实现"><a href="#第二种实现" class="headerlink" title="第二种实现"></a>第二种实现</h3><pre><code>public static void quickSort(int[] numbers, int start, int end) {   
+    if (start &lt; end) {   
+        int base = numbers[start]; // 选定的基准值（第一个数值作为基准值）   
+        int temp; // 记录临时中间值   
+        int i = start, j = end;   
+        do {   
+            while ((numbers[i] &lt; base) &amp;&amp; (i &lt; end))   
+                i++;   
+            while ((numbers[j] &gt; base) &amp;&amp; (j &gt; start))   
+                j--;   
+            if (i &lt;= j) {   
+                temp = numbers[i];   
+                numbers[i] = numbers[j];   
+                numbers[j] = temp;   
+                i++;   
+                j--;   
+            }   
+        } while (i &lt;= j);   
+        if (start &lt; j)   
+            quickSort(numbers, start, j);   
+        if (end &gt; i)   
+            quickSort(numbers, i, end);   
+    }   
 }
-</code></pre><p>这种方式实际的效果就是在调用@RequestMapping的方法之前，为request对象的model里put（“account”， Account）；</p>
-<p>用在参数上的@ModelAttribute示例代码：</p>
-<pre><code>@RequestMapping(value=&quot;/owners/{ownerId}/pets/{petId}/edit&quot;, method = RequestMethod.POST)
-public String processSubmit(@ModelAttribute Pet pet) {
-       //...
-}
-</code></pre><p>首先查询 @SessionAttributes有无绑定的Pet对象，若没有则查询@ModelAttribute方法层面上是否绑定了Pet对象，若没有则将URI template中的值按对应的名称绑定到Pet对象的各属性上。</p>
-<p>##疑难点##</p>
-<ul>
-<li>在不给定注解的情况下，参数是怎样绑定的？</li>
-</ul>
-<p>若要绑定的对象时简单类型：  调用@RequestParam来处理的。<br>若要绑定的对象时复杂类型：  调用@ModelAttribute来处理的。  </p>
-<p>这里的简单类型指java的原始类型(boolean, int 等)、原始类型对象（Boolean, Int等）、String、Date等ConversionService里可以直接String转换成目标对象的类型；</p>
-<pre><code>@RequestMapping ({&quot;/&quot;, &quot;/home&quot;})
-public String showHomePage(String key, User user){
+</code></pre><h3 id="第三种实现"><a href="#第三种实现" class="headerlink" title="第三种实现"></a>第三种实现</h3><pre><code>public static List&lt;Integer&gt; quicksort(final List&lt;Integer&gt; numbers){
+    if(numbers.size() &lt;2)
+        return numbers;
 
-    logger.debug(&quot;key=&quot;+key);
+    final Integer pivot = numbers.get(0); // 选定的基准值（第一个数值作为基准值）   
+    final List&lt;Integer&gt; lower = new ArrayList&lt;Integer&gt;();
+    final List&lt;Integer&gt; higher = new ArrayList&lt;Integer&gt;();
 
-    return &quot;home&quot;;
+    for(int i = 1; i &lt; numbers.size();i++){
+        if(numbers.get(i) &lt; pivot)
+            lower.add(numbers.get(i));
+        else 
+            higher.add(numbers.get(i));
+    }
+
+    final List&lt;Integer&gt; sorted = quicksort(lower);  //比基准值低的数再递归排序
+
+    sorted.add(pivot);   //基准值在中间
+    sorted.addAll(quicksort(higher));    //比基准值大的数再递归排序
+
+    return sorted;
 }
-</code></pre><p>第一个参数，默认调用@RequestParam来处理。<br>第二个参数，默认调用@ModelAttribute来处理。</p>
+</code></pre><h3 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h3><pre><code>public static void main(String[] args) {
+    int a[] = { 49, 38, 65, 97, 76, 13, 27, 49, 78, 34, 12, 64, 5, 34, 15, 35, 25,53, 51 };
+    quickSort(a, 0, a.length - 1);
+    System.out.println(&quot;从小到大快速排序：&quot; + Arrays.toString(a));
+}
+</code></pre><p>打印结果：</p>
+<blockquote>
+<p>从小到大快速排序：[5, 12, 13, 15, 25, 27, 34, 34, 35, 38, 49, 49, 51, 53, 64, 65, 76, 78, 97]</p>
+</blockquote>
 
       
     </div>
@@ -483,7 +464,9 @@ public String showHomePage(String key, User user){
       
         <div class="post-tags">
           
-            <a href="/tags/SpringMVC/" rel="tag">#SpringMVC</a>
+            <a href="/tags/排序/" rel="tag">#排序</a>
+          
+            <a href="/tags/算法/" rel="tag">#算法</a>
           
         </div>
       
@@ -492,16 +475,16 @@ public String showHomePage(String key, User user){
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/06/10/SpringMVC拦截器（资源和权限管理）/" rel="next" title="SpringMVC拦截器（资源和权限管理）">
-                <i class="fa fa-chevron-left"></i> SpringMVC拦截器（资源和权限管理）
+              <a href="/2016/10/18/设计模式-观察者模式（Observer）/" rel="next" title="设计模式-观察者模式（Observer）">
+                <i class="fa fa-chevron-left"></i> 设计模式-观察者模式（Observer）
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/07/12/排序算法-选择排序/" rel="prev" title="排序算法-选择排序">
-                排序算法-选择排序 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/10/19/设计模式-适配器模式（Adapter）/" rel="prev" title="设计模式-适配器模式（Adapter）">
+                设计模式-适配器模式（Adapter） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -528,8 +511,8 @@ public String showHomePage(String key, User user){
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/06/24/springmvc controller的参数绑定注解详解/"
-           data-title="SpringMVC controller的参数绑定注解详解" data-url="http://474903784.github.io/2016/06/24/springmvc controller的参数绑定注解详解/">
+      <div class="ds-thread" data-thread-key="2016/10/19/排序算法-快速排序/"
+           data-title="排序算法-快速排序（java多种实现）" data-url="http://474903784.github.io/2016/10/19/排序算法-快速排序/">
       </div>
     
   </div>
@@ -658,7 +641,7 @@ public String showHomePage(String key, User user){
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分类"><span class="nav-number">1.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PathVariable"><span class="nav-number">2.</span> <span class="nav-text">@PathVariable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RequestHeader、-CookieValue"><span class="nav-number">3.</span> <span class="nav-text">@RequestHeader、@CookieValue</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RequestHeader"><span class="nav-number">3.1.</span> <span class="nav-text">@RequestHeader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CookieValue"><span class="nav-number">3.2.</span> <span class="nav-text">@CookieValue</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RequestParam-RequestBody"><span class="nav-number">4.</span> <span class="nav-text">@RequestParam, @RequestBody</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RequestParam"><span class="nav-number">4.1.</span> <span class="nav-text">@RequestParam</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SessionAttributes-ModelAttribute"><span class="nav-number">5.</span> <span class="nav-text">@SessionAttributes, @ModelAttribute</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SessionAttributes"><span class="nav-number">5.1.</span> <span class="nav-text">@SessionAttributes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ModelAttribute"><span class="nav-number">5.2.</span> <span class="nav-text">@ModelAttribute</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种实现"><span class="nav-number">1.</span> <span class="nav-text">第一种实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二种实现"><span class="nav-number">2.</span> <span class="nav-text">第二种实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三种实现"><span class="nav-number">3.</span> <span class="nav-text">第三种实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出结果"><span class="nav-number">4.</span> <span class="nav-text">输出结果</span></a></li></ol></div>
             
           </div>
         </section>
