@@ -84,16 +84,16 @@
 
 
 
-<meta name="description" content="有些情况下，如果数据存在，则不作数据插入，如果数据不存在，才做数据插入。但是在insert语句中是不能带where关键字的，那又要一条sql来做判断和插入，就需要借用AUDL来处理了。">
+<meta name="description" content="有些情况下，如果数据存在，则不作数据插入，如果数据不存在，才做数据插入。但是在insert语句中是不能带where关键字的，那又要一条sql来做判断和插入，就需要借用DUAL来处理了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sql之数据不存在情况下才插入数据">
 <meta property="og:url" content="http://474903784.github.io/2016/11/01/sql之数据不存在情况下才插入数据/index.html">
 <meta property="og:site_name" content="星火燎猿">
-<meta property="og:description" content="有些情况下，如果数据存在，则不作数据插入，如果数据不存在，才做数据插入。但是在insert语句中是不能带where关键字的，那又要一条sql来做判断和插入，就需要借用AUDL来处理了。">
-<meta property="og:updated_time" content="2016-12-14T16:01:37.880Z">
+<meta property="og:description" content="有些情况下，如果数据存在，则不作数据插入，如果数据不存在，才做数据插入。但是在insert语句中是不能带where关键字的，那又要一条sql来做判断和插入，就需要借用DUAL来处理了。">
+<meta property="og:updated_time" content="2016-12-15T01:40:43.484Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sql之数据不存在情况下才插入数据">
-<meta name="twitter:description" content="有些情况下，如果数据存在，则不作数据插入，如果数据不存在，才做数据插入。但是在insert语句中是不能带where关键字的，那又要一条sql来做判断和插入，就需要借用AUDL来处理了。">
+<meta name="twitter:description" content="有些情况下，如果数据存在，则不作数据插入，如果数据不存在，才做数据插入。但是在insert语句中是不能带where关键字的，那又要一条sql来做判断和插入，就需要借用DUAL来处理了。">
 
 
 
@@ -355,7 +355,7 @@
       
 
       
-        <p>　　有些情况下，如果数据存在，则不作数据插入，如果数据不存在，才做数据插入。但是在insert语句中是不能带where关键字的，那又要一条sql来做判断和插入，就需要借用AUDL来处理了。</p>
+        <p>　　有些情况下，如果数据存在，则不作数据插入，如果数据不存在，才做数据插入。但是在insert语句中是不能带where关键字的，那又要一条sql来做判断和插入，就需要借用DUAL来处理了。</p>
 <a id="more"></a>
 <p>　　<br>　　用最原始的方法就是先    </p>
 <pre><code>select * from user where name = &apos;lwx&apos;;
