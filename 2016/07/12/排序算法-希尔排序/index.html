@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://474903784.github.io/2016/07/12/排序算法-希尔排序/index.html">
 <meta property="og:site_name" content="星火燎猿">
 <meta property="og:description" content="希尔排序也被称为“缩小增量排序”，其基本原理如下：先将待排序的数组元素分为多个子序列，使得每个子序列的元素个数相对较小，然后对各个子序列分别进行直接插入排序，待整个待排序序列“基本有序后”，最后再对所有元素进行一次直接插入排序。">
-<meta property="og:updated_time" content="2016-12-09T01:48:58.357Z">
+<meta property="og:updated_time" content="2016-12-17T10:10:43.991Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排序算法-希尔排序">
 <meta name="twitter:description" content="希尔排序也被称为“缩小增量排序”，其基本原理如下：先将待排序的数组元素分为多个子序列，使得每个子序列的元素个数相对较小，然后对各个子序列分别进行直接插入排序，待整个待排序序列“基本有序后”，最后再对所有元素进行一次直接插入排序。">
@@ -359,19 +359,21 @@
 <a id="more"></a>
 <pre><code>public class Sort {
 
-    private static void sort4(int[] a) {
-        for(int h = a.length / 2; h &gt; 0; h /= 2) {
-            for(int i = h; i &lt; a.length; ++i) {
-                int temp = a[i], j = i;
-                while(j &gt;= h &amp;&amp; a[j - h] &gt; temp)
-                {
-                    a[j] = a[j - h];
-                    j -= h;
+    private static void sort4(int[] a){
+        int d  = a.length;
+        while (d!=0) {
+            d=d/2;
+            for (int x = 0; x &lt; d; x++) {//分的组数
+                for (int i = x + d; i &lt; a.length; i += d) {//组中的元素，从第二个数开始
+                    int j = i - d;//j为有序序列最后一位的位数
+                    int temp = a[i];//要插入的元素
+                    for (; j &gt;= 0 &amp;&amp; temp &lt; a[j]; j -= d) {//从后往前遍历。
+                        a[j + d] = a[j];//向后移动d位
+                    }
+                    a[j + d] = temp;
                 }
-                a[j] = temp;
             }
         }
-
     }
 
     public static void main(String[] args) {

@@ -189,7 +189,7 @@ public class WrapperDemo {
     
     <entry>
       <title><![CDATA[排序算法-快速排序（java多种实现）]]></title>
-      <url>http://474903784.github.io/2016/10/19/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
+      <url>http://474903784.github.io/2016/10/19/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88java%E5%A4%9A%E7%A7%8D%E5%AE%9E%E7%8E%B0%EF%BC%89/</url>
       <content type="html"><![CDATA[<p>　　快速排序是一种要求时间最快的排序算法，其基本原理如下：选择一个基准元素,通常选择第一个元素或者最后一个元素,通过一趟扫描，将待排序列分成两部分,一部分比基准元素小,一部分大于等于基准元素,此时基准元素在其排好序后的正确位置,然后再用同样的方法递归地排序划分的两部分。<br><a id="more"></a></p>
 <h3 id="第一种实现"><a href="#第一种实现" class="headerlink" title="第一种实现"></a>第一种实现</h3><p>实例：<br><img src="/images/排序算法-快速排序（java多种实现）/1336807447_1275.png" alt="快排实例图"></p>
 <p>实现：</p>
@@ -1994,23 +1994,23 @@ watch();
     <entry>
       <title><![CDATA[排序算法-冒泡排序]]></title>
       <url>http://474903784.github.io/2016/07/12/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</url>
-      <content type="html"><![CDATA[<p>　　冒泡排序顾名思义就是整个过程就像气泡一样往上升，单向冒泡排序的基本思想是（假设由小到大排序）：对于给定的n个记录，从第一个记录开始依次对邻居的两个记录进行比较，当前面的记录大于后面的记录时，交换位置，进行一轮比较和换位后，n个记录中的最大记录将位于第n位；然后对前（n-1）个记录进行第二轮比较；重复该过程直到进行比较的记录只剩下一个为止。</p>
+      <content type="html"><![CDATA[<p>　　冒泡排序顾名思义就是整个过程就像气泡一样往上升，单向冒泡排序的基本思想是（假设由小到大排序）：<br>　　1. 将序列中所有元素两两比较，将最大的放在最后面。<br>　　2. 将剩余序列中所有元素两两比较，将最大的放在最后面。<br>　　3. 重复第二步，直到只剩下一个数。  </p>
 <a id="more"></a>
 <pre><code>public class Sort {
 
     private static void sort3(int[] a) {
-        for(int i = 1; i &lt; a.length; ++i) {
-            for(int j = a.length - i; j &gt; 0; --j) {
-                if(a[j] &lt; a[j - 1]) {
-                    int temp = a[j];
-                    a[j] = a[j - 1];
-                    a[j - 1] = temp;
+        int length=a.length;
+        int temp;
+        for(int i=0;i&lt;a.length;i++){
+            for(int j=0;j&lt;a.length-i-1;j++){
+                if(a[j]&gt;a[j+1]){
+                    temp=a[j];
+                    a[j]=a[j+1];
+                    a[j+1]=temp;
                 }
             }
-
         }
     }
-
 
     public static void main(String[] args) {
         int[] a = {36, 27, 48, 12, 25, 65, 43, 57};
@@ -2040,19 +2040,21 @@ watch();
 <a id="more"></a>
 <pre><code>public class Sort {
 
-    private static void sort4(int[] a) {
-        for(int h = a.length / 2; h &gt; 0; h /= 2) {
-            for(int i = h; i &lt; a.length; ++i) {
-                int temp = a[i], j = i;
-                while(j &gt;= h &amp;&amp; a[j - h] &gt; temp)
-                {
-                    a[j] = a[j - h];
-                    j -= h;
+    private static void sort4(int[] a){
+        int d  = a.length;
+        while (d!=0) {
+            d=d/2;
+            for (int x = 0; x &lt; d; x++) {//分的组数
+                for (int i = x + d; i &lt; a.length; i += d) {//组中的元素，从第二个数开始
+                    int j = i - d;//j为有序序列最后一位的位数
+                    int temp = a[i];//要插入的元素
+                    for (; j &gt;= 0 &amp;&amp; temp &lt; a[j]; j -= d) {//从后往前遍历。
+                        a[j + d] = a[j];//向后移动d位
+                    }
+                    a[j + d] = temp;
                 }
-                a[j] = temp;
             }
         }
-
     }
 
     public static void main(String[] args) {
@@ -2084,16 +2086,18 @@ watch();
 <pre><code>public class Sort {
 
     private static void sort2(int[] a) {
-        for(int i = 1; i &lt; a.length; ++i) {
-            int temp = a[i], j = i;
-            while(j &gt;= 1 &amp;&amp; a[j - 1] &gt; temp) {
-                a[j] = a[j - 1];
-                --j;
+        int length=a.length;//数组长度，将这个提取出来是为了提高速度。
+        int insertNum;//要插入的数
+        for(int i=1;i&lt;length;i++){//插入的次数
+            insertNum=a[i];//要插入的数
+            int j=i-1;//已经排序好的序列元素个数
+            while(j&gt;=0&amp;&amp;a[j]&gt;insertNum){//序列从后到前循环，将大于insertNum的数向后移动一格
+                a[j+1]=a[j];//元素移动一格
+                j--;
             }
-            a[j] = temp;
+            a[j+1]=insertNum;//将需要插入的数放在要插入的位置。
         }
     }
-
 
     public static void main(String[] args) {
         int[] a = {36, 27, 48, 12, 25, 65, 43, 57};
